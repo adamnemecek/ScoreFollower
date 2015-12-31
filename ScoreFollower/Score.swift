@@ -18,7 +18,7 @@ public class Score {
 	public let noteSpectra: [[Double]]
 	public let states: [(Int, Double, Double)]
 	
-	public init(allNotes: [([Int], Double)]) {
+	public init(_ allNotes: [([Int], Double)]) {
 		
 		var length = 0.0
 		var notes: [HashableArray<Int>: Int] = [:]
@@ -48,6 +48,7 @@ public class Score {
 	}
 	
 }
+
 class HashableArray<T: Hashable>: Hashable {
 	var array: [T]
 	init(array: [T]) {
@@ -61,6 +62,7 @@ class HashableArray<T: Hashable>: Hashable {
 		return hashCode
 	}
 }
+
 func ==<T: Hashable>(lhs: HashableArray<T>, rhs: HashableArray<T>) -> Bool {
 	return lhs.array == rhs.array
 }

@@ -32,9 +32,6 @@ public class ScoreFollower {
 				states.append(SemiMarkovState(scorePosition: state.1, notes: self.notes[state.0], previous: states[states.count - 1], length: state.2))
 			}
 		}
-		for s in score.states {
-			print("ASDF  \(s.0)")
-		}
 		self.tempo = tempo / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize)
 	}
 	
@@ -64,7 +61,7 @@ public class ScoreFollower {
 		//println(currentRange)
 		var pViterbi = [Double](count: currentRange.endIndex - currentRange.startIndex, repeatedValue: 0.0)
 		for (i, s) in states[currentRange].enumerate() {
-			pViterbi[i] = s.update(observation, tempo: tempo, t: t)
+			pViterbi[i] = s.update(observation, tempo, t)
 			//println("    \(i + currentRange.startIndex) \(pViterbi[i])")
 		}
 		//Utils.normalize(&pViterbi)
@@ -72,7 +69,6 @@ public class ScoreFollower {
 		s.update(pViterbi[i])
 		}*/
 		t++
-		//print("\(t) ")
 		var vMax = 0.0
 		var iMax = vDSP_Length(0)
 		vDSP_maxviD(pViterbi, 1, &vMax, &iMax, vDSP_Length(pViterbi.count))

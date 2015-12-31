@@ -14,7 +14,7 @@ public class ScoreElement {
 	func pEmission(t: Int) -> Double! {
 		return pEmission[t]
 	}
-	func update(observation: [Double], t: Int) {
+	func update(observation: [Double], _ t: Int) {
 		if pEmission[t] == nil {
 			pEmission[t] = log(calculate(observation))
 		}

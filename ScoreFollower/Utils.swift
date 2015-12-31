@@ -26,7 +26,7 @@ public struct Parameters {
 }*/
 public struct Utils {
 	//public static let rest: ScoreElement = Rest()
-	public static func logSumExp(values: [Double], max: Double) -> Double {
+	public static func logSumExp(values: [Double], _ max: Double) -> Double {
 		var expValues = [Double](count: values.count, repeatedValue: 0.0)
 		var max = max
 		vDSP_vsaddD(values, 1, &max, &expValues, 1, vDSP_Length(values.count))
@@ -41,7 +41,7 @@ public struct Utils {
 	public static func frequencyToNote(frequency: Double) -> Double {
 		return 12 * log(frequency / A0) / log(2) + 9
 	}
-	public static func normalDistribution(x: Double, mean: Double, sd: Double) -> Double {
+	public static func normalDistribution(x: Double, _ mean: Double, _ sd: Double) -> Double {
 		return 1.0 / (sd * sqrt(2 * M_PI)) * exp(-(x - mean) * (x - mean) / (2 * sd * sd));
 	}
 	public static let fftsetup = vDSP_create_fftsetupD(vDSP_Length(Parameters.log2size), FFTRadix(kFFTRadix2))
@@ -76,16 +76,16 @@ public struct Utils {
 	public static func frequencyTemplate(notes: [Int]) -> [Double] {
 		var frequencies = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
 		for (_, note) in notes.enumerate() {
-			addFrequency(&frequencies, note: Double(note), power: 1)
+			addFrequency(&frequencies, Double(note), 1)
 			var octave: Int = 0
 			for i in 2...Parameters.harmonics {
 				if (i & (i - 1)) == 0 {
 					octave++
 					//addFrequency(&frequencies, note: Double(note + 12 * octave), power: 1.0 / Double(i))
-                    addFrequency(&frequencies, note: Double(note + 12 * octave), power: 1.0 / pow(2.0, Double(i - 1)))
+                    addFrequency(&frequencies, Double(note + 12 * octave), 1.0 / pow(2.0, Double(i - 1)))
 				}
 				else {
-					addFrequency(&frequencies, note: frequencyToNote(Double(i) * noteToFrequency(Double(note))), power: 1.0 / pow(2.0, Double(i - 1)))
+					addFrequency(&frequencies, frequencyToNote(Double(i) * noteToFrequency(Double(note))), 1.0 / pow(2.0, Double(i - 1)))
 				}
 			}
 		}
@@ -98,16 +98,18 @@ public struct Utils {
 		}
 		return frequencies
 	}
-	private static func addFrequency(inout frequencies: [Double], note: Double, power: Double) {
+	private static func addFrequency(inout frequencies: [Double], _ note: Double, _ power: Double) {
         //print("Test ")
         //println(round(noteToFrequency(note - 4 * Parameters.sd) * Double(Parameters.windowSize) / Double(Parameters.sampleRate)))
 		let minFrequency = max(Int(round(noteToFrequency(note - 4 * Parameters.sd) * Double(Parameters.windowSize) / Double(Parameters.sampleRate))), 0)
-		let maxFrequency = min(Int(round(noteToFrequency(note + 4 * Parameters.sd) * Double(Parameters.windowSize) / Double(Parameters.sampleRate))), Parameters.windowSize - 1)
+		let maxFrequency = min(Int(round(noteToFrequency(note + 4 * Parameters.sd) * Double(Parameters.windowSize) / Double(Parameters.sampleRate))), Parameters.fftlength - 1)
 		//println(minFrequency)
 		//println(maxFrequency)
 		//println(normalDistribution(frequencyToNote(Double((minFrequency + maxFrequency)) / 2.0 * Double(Parameters.sampleRate) / Double(Parameters.windowSize)), mean: note, sd: Parameters.sd))
-		for i in minFrequency...maxFrequency {
-			frequencies[i] += power * normalDistribution(frequencyToNote(Double(i) * Double(Parameters.sampleRate) / Double(Parameters.windowSize)), mean: note, sd: Parameters.sd)
+		if minFrequency < maxFrequency {
+			for i in minFrequency...maxFrequency {
+				frequencies[i] += power * normalDistribution(frequencyToNote(Double(i) * Double(Parameters.sampleRate) / Double(Parameters.windowSize)), note, Parameters.sd)
+			}
 		}
 	}
 	/*public static func bhattacharyya(observation: [Double], frequencies: [Int: Double]) -> Double {
@@ -131,9 +133,100 @@ public struct Utils {
 		vDSP_dotprD(observation, 1, pinkNoise, 1, &dotp, vDSP_Length(Parameters.fftlength))
 		return dotp
 	}*/
-	/*public static func parseMIDI(URL: NSURL) -> Score {
+	public static func parseMIDI(URL: NSURL) -> [([Int], Double)] {
+		
+		var notes = [[(Double, Int, Bool)]]()
+		
 		var sequence = MusicSequence()
 		NewMusicSequence(&sequence)
 		MusicSequenceFileLoad(sequence, URL, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
-	}*/
+		
+		
+		var trackCount: UInt32 = 0
+		MusicSequenceGetTrackCount(sequence, &trackCount)
+		var track: MusicTrack = nil
+		var iterator: MusicEventIterator = nil
+		for i in 0...trackCount {
+			MusicSequenceGetIndTrack(sequence, i, &track)
+			NewMusicEventIterator(track, &iterator)
+			notes += parseTrack(track, iterator: iterator)
+		}
+		
+		return midiNotesToScore(merge(notes, { $0.0 < $1.0 }))
+		
+	}
+	
+	private static func parseTrack(track: MusicTrack, iterator: MusicEventIterator) -> [[(Double, Int, Bool)]] {
+		
+		var notes = [[(Double, Int, Bool)](), [(Double, Int, Bool)]()]
+		
+		var hasNext: DarwinBoolean = false
+		MusicEventIteratorHasNextEvent(iterator, &hasNext)
+		var timeStamp: MusicTimeStamp = 0
+		var eventType: MusicEventType = 0
+		var eventData: UnsafePointer<Void> = nil
+		var eventDataSize: UInt32 = 0
+		while hasNext {
+			MusicEventIteratorGetEventInfo(iterator, &timeStamp, &eventType, &eventData, &eventDataSize)
+			if eventType == kMusicEventType_MIDINoteMessage {
+				let noteData = UnsafePointer<MIDINoteMessage>(eventData)
+				notes[0].append((timeStamp, Int(noteData.memory.note), true))
+				if (noteData.memory.duration == 0.0500000007450581) {
+					notes[1].append((timeStamp + Double(0.5), Int(noteData.memory.note), false))
+				} else {
+					notes[1].append((timeStamp + Double(noteData.memory.duration), Int(noteData.memory.note), false))
+				}
+			}
+			MusicEventIteratorNextEvent(iterator)
+			MusicEventIteratorHasCurrentEvent(iterator, &hasNext)
+		}
+		
+		return notes
+		
+	}
+	
+	private static func midiNotesToScore(midiNotes: [(Double, Int, Bool)]) -> [([Int], Double)] {
+		var scoreNotes = [([Int], Double)]()
+		var currentNotes = [Int]()
+		var lastTimeStamp = 0.0
+		for note in midiNotes {
+			if note.0 != lastTimeStamp {
+				scoreNotes.append((currentNotes, note.0 - lastTimeStamp))
+			}
+			lastTimeStamp = note.0
+			if note.2 {
+				currentNotes.append(note.1 - 12)
+			} else {
+				currentNotes.removeAtIndex(currentNotes.indexOf(note.1 - 12)!)
+			}
+		}
+		return scoreNotes
+	}
+	
+	public static func merge<T>(arrays: [[T]], _ lessThan: (T, T) -> Bool) -> [T] {
+		var arrayCapacity = 0
+		for array in arrays {
+			arrayCapacity += array.count
+		}
+		var mergedArray = [T]()
+		mergedArray.reserveCapacity(arrayCapacity)
+		var value: (Int, T)!
+		var startPositions = [Int](count: arrays.count, repeatedValue: 0)
+		var done = false
+		while !done {
+			for (i, array) in arrays.enumerate() {
+				if startPositions[i] < array.count && (value == nil || lessThan(arrays[i][startPositions[i]], value.1)) {
+					value = (i, arrays[i][startPositions[i]])
+				}
+			}
+			if value == nil {
+				done = true
+			} else {
+				startPositions[value.0]++
+				mergedArray.append(value.1)
+				value = nil
+			}
+		}
+		return mergedArray
+	}
 }

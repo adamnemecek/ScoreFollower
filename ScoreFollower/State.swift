@@ -26,7 +26,7 @@ public class State {
 	convenience init(silence: ScoreElement) {
 		self.init(scorePosition: 0, notes: silence, previous: nil, length: 0)
 	}
-	func viterbiFunction(tempo: Double, t: Int) -> Double {
+	func viterbiFunction(tempo: Double, _ t: Int) -> Double {
 		//self.kalman[t] = Kalman(v0: tempo)
 		return t == 0 ? 0 : self.pEmission(t) + self.pViterbi(t - 1)
 	}
@@ -43,10 +43,10 @@ public class State {
 	public func pViterbi(t: Int) -> Double {
 		return t == 0 ? 0 : (startTime == nil || t < startTime || t >= pViterbi.count + startTime) ? -Double.infinity : pViterbi[t - startTime]
 	}
-	public func update(observation: [Double], tempo: Double, t: Int) -> Double {
+	public func update(observation: [Double], _ tempo: Double, _ t: Int) -> Double {
 		if startTime == nil { startTime = t }
-        notes.update(observation, t: t)
-		let p = viterbiFunction(tempo, t: t)
+        notes.update(observation, t)
+		let p = viterbiFunction(tempo, t)
 		pViterbi.append(p)
         return p
 	}
@@ -56,7 +56,7 @@ class MarkovState: State {
 	init(scorePosition: Double, notes: ScoreElement, previous: State) {
 		super.init(scorePosition: scorePosition, notes: notes, previous: previous, length: 0)
 	}
-	override func viterbiFunction(tempo: Double, t: Int) -> Double {
+	override func viterbiFunction(tempo: Double, _ t: Int) -> Double {
 		let pPrevious = log(0.5) + previous.pViterbi(t - 1)
 		let pSelf = log(0.5) + self.pViterbi(t - 1)
 		if pPrevious > pSelf {
@@ -71,11 +71,19 @@ class MarkovState: State {
 }
 
 class SemiMarkovState: State {
+	enum survivalDistributionMode {
+		case logistic
+		case gaussian
+		case cauchy
+		//case poisson
+		case exponential
+	}
+	var mode = survivalDistributionMode.gaussian
 	init(scorePosition: Double, notes: ScoreElement, previous: State, length: Double) {
 		super.init(scorePosition: scorePosition, notes: notes, previous: previous, length: length)
 	}
-	override func viterbiFunction(tempo: Double, t: Int) -> Double {
-		let uMax = max(min(Int(2.0 / tempo * length), t - self.startTime), 1)
+	override func viterbiFunction(tempo: Double, _ t: Int) -> Double {
+		let uMax = max(min(Int(2.0 / tempo * length), t - self.startTime), 2)
 		var v = [Double](count: uMax - 1, repeatedValue: 0.0)
 		var lastProduct = self.pEmission(t)
 		//var tempo: Double
@@ -83,16 +91,23 @@ class SemiMarkovState: State {
 			//tempo = previous.kalman(t - u).getTempo()
 			lastProduct += self.pEmission(t - u)
 			v[u - 1] = lastProduct + previous.pViterbi(t - u)
-			v[u - 1] -= log(1.0 + exp(12.0 * (Double(u) / (length / tempo) - 1.0)))
-			//v *= Utils.function({1.0 / (1.0 + exp(12.0 * ($0 - 1.0)))}, x: Double(-u) / (length / tempo))
+			switch mode {
+			case .logistic:
+				v[u - 1] -= log(1.0 + exp(12.0 * (Double(u) / (length / tempo) - 1.0)))
+			case .gaussian:
+				v[u - 1] += log(0.5 * (1 + erf((-Double(u) + length / tempo) / sqrt(0.3 * length / tempo * 2))))
+			case .cauchy:
+				v[u - 1] += log(1.0 / M_PI * atan((-((Double(u) / (length / tempo)) - 1.0)) / (0.2 * tempo)) + 0.5)
+			//case .poisson:
+			//	v[u - 1] += 0
+			case .exponential:
+				v[u - 1] -= 0.5 * Double(u) / (length / tempo)
+			}
 		}
-		
-		var duration: Int
 		var vMax = -Double.infinity
 		for i in 0..<v.count {
 			if v[i] > vMax {
 				vMax = v[i]
-				duration = i
 			}
 		}
 		//var pNormalized = vMax - Utils.logSumExp(v, max: vMax)

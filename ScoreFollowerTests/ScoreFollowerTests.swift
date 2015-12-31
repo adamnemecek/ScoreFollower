@@ -41,7 +41,9 @@ class ScoreFollowerTests: XCTestCase {
 	var oldsamples: [Float] = [Float]()
 	var newsamples: [Float] = [Float](count: 100, repeatedValue: 0.0)
 	var duplicate = false
-	var score = ScoreFollower(score: Score(allNotes: ScoreFollowerTests.initializeSchubert()), tempo: 280) // = Score(startTempo: 160)
+	//var score = ScoreFollower(score: Score(ScoreFollowerTests.initializeSchubert()), tempo: 280) // = Score(startTempo: 160)
+	var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))), tempo: 150)
+	//var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sacrintr.mid"))), tempo: 54)
 	/*var schubert = [
 	
 		[33, 49],
@@ -410,6 +412,14 @@ class ScoreFollowerTests: XCTestCase {
             }
             println()
         }*/
+		var a = [1,3,6,7,9,15,400,461,462]
+		var b = [1,2,4,5,300,1000]
+		var c = [30,40,50,51,52,420]
+		var score = Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))
+		for (i, array) in score.enumerate() {
+			print(i, array)
+		}
+		print(Utils.merge([a,b,c],<))
 		print("ASDFASDFASDFASDFASDFASDFASDFA")
 		//testKalman()
 		do {
@@ -418,7 +428,7 @@ class ScoreFollowerTests: XCTestCase {
 		catch is NSError {
 			
 		}
-        sleep(100)
+        sleep(10000)
     }
 	
 	/*func testKalman() {
