@@ -447,14 +447,14 @@ class ScoreFollowerTests: XCTestCase {
 		var d1 = [Double]()
 		var l1 = 3.5 / (140.0 / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize)) 
 		for x in 0...length - 1 {
-			d1.append(log(Utils.poisson_pdf(x, l1)))
-			//d1.append(Utils.normalDistribution(Double(x), l1, 0.01 * l1 * l1))
+			//d1.append(log(Utils.poisson_pdf(x, l1)))
+			d1.append(normal_pdf(x, l1, 2))
 		}
 		var d2 = [Double]()
-		var l2 = 12.75 / (140.0 / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize))
+		var l2 = 0.5 / (140.0 / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize))
 		for x in 0...length - 1 {
-			d2.append(log(Utils.poisson_pdf(x, l2)))
-			//d2.append(Utils.normalDistribution(Double(x), l2, 0.01 * l2 * l2))
+			//d2.append(log(Utils.poisson_pdf(x, l2)))
+			d2.append(normal_pdf(x, l2, 2))
 		}
 		var d3 = [Double](count: length, repeatedValue: 0.0)
 		vDSP_convD(d1, 1, d2, 1, &d3, 1, vDSP_Length(length), vDSP_Length(length))
@@ -462,15 +462,15 @@ class ScoreFollowerTests: XCTestCase {
 		var d4 = [Double]()
 		var l3 = l1 + l2
 		for x in 0...length - 1 {
-			d4.append(log(Utils.poisson_pdf(x, l3)))
-			//d4.append(Utils.normalDistribution(Double(x), l3, 0.01 * l3 * l3))
+			//d4.append(log(Utils.poisson_pdf(x, l3)))
+			d4.append(normal_pdf(x, l3, 2))
 		}
 		for x in 0...length - 1 {
-			print("\(x): \((d3[x]))")
+			print("\(exp(d3[x]))")
 		}
 		print("   ")
 		for x in 0...length - 1 {
-			print("\(x): \((d4[x]))")
+			print("\(exp(d4[x]))")
 		}
 		
 		do {
@@ -481,6 +481,13 @@ class ScoreFollowerTests: XCTestCase {
 		}
         sleep(10000)
     }
+	
+	func normal_pdf(x: Int, _ mu: Double, _ factor: Double) -> Double {
+		let d = 0.01
+		let a = 0.5 * (1 + erf((Double(x) - d - mu) / sqrt(factor * mu * 2))) / (2.0 * d)
+		let b = 0.5 * (1 + erf((Double(x) + d - mu) / sqrt(factor * mu * 2))) / (2.0 * d)
+		return log(b - a)
+	}
 	
 	func logConvolve(d1: [Double], _ d2: [Double], _ length: Int) -> [Double] {
 		var d3 = [Double](count: length, repeatedValue: 0.0)

@@ -103,59 +103,29 @@ class SemiMarkovState: State {
 		super.init(scorePosition: scorePosition, notes: notes, previous: previous, length: length)
 	}
 	private func prepare(tempo: Double, _ t: Int) {
-		//let uMax = max(min(Int(2.0 / tempo * length), t - self.startTime), 2)
-		let uMax = max(t + 1, 2)//max(Int(2.0 / tempo * length), 2)
-		observationTable = [Double](count: t + 1, repeatedValue: 0.0)
+		let uMax = min(max(Int(4.0 / tempo * length), 8), t - self.startTime)
+		//let uMax = max(t + 1, 2)//max(Int(2.0 / tempo * length), 2)
+		observationTable = [Double](count: uMax, repeatedValue: 0.0)
 		var lastProduct = 0.0
-		for u in 0...t {
-			//lastProduct += pEmission(t - u + 1)
-			observationTable[u] = lastProduct + previous.pTransition(t - u)
+		for u in 0..<uMax {
+			lastProduct += pEmission(t - u)
+			observationTable[u] = lastProduct + previous.pTransition(t - u - 1)
 		}
 	}
 	override func transitionFunction(tempo: Double, _ t: Int) -> Double {
 		var transitionTable = observationTable
-		let variance = max(varianceFactor * length / tempo, 0.0001)
 		for u in 0..<observationTable.count {
-			//let a = 0.5 * (1 + erf((Double(u) - 0.5 - length / tempo) / sqrt(variance * 2)))
-			//let b = 0.5 * (1 + erf((Double(u) + 0.5 - length / tempo) / sqrt(variance * 2)))
-			
-			/*let duration1 = Int(Double(u) - length / tempo)
-			var duration2 = Int(Double(u + 1) - length / tempo)
-			if duration1 != 0 || duration2 != 1 {
-				transitionTable[u - 1] -= Double.infinity
-			}*/
-			
-			/*print(tempo)
-			if length <= 0.04 {
-				print(variance)
-			} else {
-				print("ASDFASDF\(variance)")
-			}*/
-			//print("\(scorePosition) + \(length / tempo)")
-			transitionTable[u] += log(Utils.poisson_pdf(u, length / tempo))
-			//transitionTable[u - 1] += log(b - a)
+			//transitionTable[u] += log(Utils.poisson_pdf(u, length / tempo))
+			transitionTable[u] += log(Utils.gaussian_pdf(u + 1, length / tempo, 0.1))
 		}
-		
-		/*var vMax = 0.0
-		var iMax = vDSP_Length(0)
-		vDSP_maxviD(transitionTable, 1, &vMax, &iMax, vDSP_Length(transitionTable.count))
-		
-		return vMax*/
 		return Utils.logSumExp(transitionTable)
 	}
 	override func viterbiFunction(tempo: Double, _ t: Int) -> Double {
 		var viterbiTable = observationTable
-		let variance = max(varianceFactor * length / tempo, 0.0001)
-		for u in 1..<observationTable.count + 1 {
-			viterbiTable[u - 1] += log(Utils.poisson_cdf_c(u - 1, length / tempo))
-			//viterbiTable[u - 1] += log(0.5 * (1 + erf((-Double(u) + length / tempo) / sqrt(variance * 2))))
+		for u in 0..<observationTable.count {
+			//viterbiTable[u] += log(Utils.poisson_cdf_c(u, length / tempo))
+			viterbiTable[u] += log(Utils.gaussian_cdf_c(u + 1, length / tempo, 0.1))
 		}
-		/*var vMax = 0.0
-		var iMax = vDSP_Length(0)
-		vDSP_maxviD(viterbiTable, 1, &vMax, &iMax, vDSP_Length(viterbiTable.count))
-		
-		return vMax*/
-		
 		return Utils.logSumExp(viterbiTable)
 		
 		/*let uMax = max(min(Int(2.0 / tempo * length), t - self.startTime), 2)

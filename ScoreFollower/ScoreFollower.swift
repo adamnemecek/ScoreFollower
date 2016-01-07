@@ -18,7 +18,7 @@ public class ScoreFollower {
 	private var detectedStates = [0]
 	private var currentRange = 0...0
 	private var t = 0
-	private var window = 4.0 * Double(Parameters.sampleRate) / Double(Parameters.windowSize)
+	private var window = 10.0 * Double(Parameters.sampleRate) / Double(Parameters.windowSize)
 	
 	var x = 0
 	
@@ -40,7 +40,7 @@ public class ScoreFollower {
 	
 	public func update(observation: [Double]) -> Int {
 		
-		currentRange = 0...35//getWindow()
+		currentRange = getWindow()
 		var pViterbi = [Double](count: currentRange.endIndex - currentRange.startIndex, repeatedValue: 0.0)
 		for (i, s) in states[currentRange].enumerate() {
 			pViterbi[i] = s.update(observation, tempo, t)
@@ -73,7 +73,7 @@ public class ScoreFollower {
 		}
 		var i2 = detectedStates[detectedStates.count - 1]
 		t = 0.0
-		while (t < window || i2 < currentRange.endIndex - 1) && i2 < currentRange.endIndex && i2 < states.count - 1 {
+		while (t < window || i2 < currentRange.endIndex - 1) /*&& i2 < currentRange.endIndex*/ && i2 < states.count - 1 {
 			i2++
 			t += states[i2].length / tempo
 		}

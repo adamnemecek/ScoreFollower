@@ -28,7 +28,7 @@ public struct Utils {
 	//public static let rest: ScoreElement = Rest()
 	public static func logSumExp(values: [Double]) -> Double {
 		
-		if values.count == 0 {
+		if values.isEmpty {
 			return -Double.infinity
 		}
 		
@@ -93,6 +93,18 @@ public struct Utils {
 	}
 	private static func gamma_cdf_c(x: Double, alpha: Double, theta: Double) -> Double {
 		return igamc(alpha, x / theta);
+	}
+	
+	public static func gaussian_pdf(x: Int, _ mu: Double, _ factor: Double) -> Double {
+		let a = 0.5 * (1 + erf((Double(x) - 0.5 - mu) / sqrt(factor * mu * 2)))
+		let b = 0.5 * (1 + erf((Double(x) + 0.5 - mu) / sqrt(factor * mu * 2)))
+		return b - a
+	}
+	public static func gaussian_cdf(x: Int, _ mu: Double, _ factor: Double) -> Double {
+		return 0.5 * (1 + erf((Double(x) - mu) / sqrt(factor * mu * 2)))
+	}
+	public static func gaussian_cdf_c(x: Int, _ mu: Double, _ factor: Double) -> Double {
+		return 0.5 * (1 + erf((-Double(x) + mu) / sqrt(factor * mu * 2)))
 	}
 	
 	public static let fftsetup = vDSP_create_fftsetupD(vDSP_Length(Parameters.log2size), FFTRadix(kFFTRadix2))
