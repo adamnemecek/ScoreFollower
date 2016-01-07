@@ -27,7 +27,7 @@ public struct Kalman {
 		self.P = P
 	}
 	
-	public func update(Δt: Double, σa: Double, a: Double, z: Double, σz: Double) -> Kalman {
+	public func update(Δt Δt: Double, σa: Double, a: Double, z: Double, σz: Double) -> Kalman {
 		
 		let z = Matrix(matrix: [z], rows: 1, columns: 1)
 		let F = Matrix(matrix: [1, Δt, 0, 1], rows: 2, columns: 2)

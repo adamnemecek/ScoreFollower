@@ -42,7 +42,7 @@ class ScoreFollowerTests: XCTestCase {
 	var newsamples: [Float] = [Float](count: 100, repeatedValue: 0.0)
 	var duplicate = false
 	//var score = ScoreFollower(score: Score(ScoreFollowerTests.initializeSchubert()), tempo: 280) // = Score(startTempo: 160)
-	var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))), tempo: 150)
+	var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))), tempo: 140)
 	//var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sacrintr.mid"))), tempo: 54)
 	/*var schubert = [
 	
@@ -164,7 +164,7 @@ class ScoreFollowerTests: XCTestCase {
         TPCircularBufferInit(&buffer, Int32(sizeof(Float) * (Parameters.windowSize + Parameters.windowSize)))
         // Put setup code here. This method is called before the invocation of each test method in the class.
         // audioManager.inputFormat.mChannelsPerFrame = 1
-        controller.addInputReceiver(AEBlockAudioReceiver() {source, time, frames, audio in
+		controller.addInputReceiver(AEBlockAudioReceiver() {source, time, frames, audio in
 			self.oldsamples = self.newsamples
 			self.newsamples = [Float](count: Int(frames), repeatedValue: 0.0)
 			for i in 0..<Int(frames) {
@@ -412,16 +412,67 @@ class ScoreFollowerTests: XCTestCase {
             }
             println()
         }*/
-		var a = [1,3,6,7,9,15,400,461,462]
+		/*var a = [1,3,6,7,9,15,400,461,462]
 		var b = [1,2,4,5,300,1000]
 		var c = [30,40,50,51,52,420]
+		var d = a
+		d[2] -= 10
 		var score = Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))
 		for (i, array) in score.enumerate() {
 			print(i, array)
 		}
+		print("a\(a)")
 		print(Utils.merge([a,b,c],<))
 		print("ASDFASDFASDFASDFASDFASDFASDFA")
+		print(Utils.logSumExp([-Double.infinity, -Double.infinity, -Double.infinity]))
+		print(Utils.logSumExp([1000, 1001, 1000]))
+		var length = 5.0
+		var tempo = 1.0
+		var variance = 1.0
+		for u in 1..<10 {
+			print(0.5 * (1 + erf((-Double(u) + length / tempo) / sqrt(variance * 2))))
+		}
+		print("Poisson:")
+		for x in 0...20 {
+			print("pdf: \(x): \(Utils.poisson_pdf(x, 10))")
+		}
+		for x in 0...20 {
+			print("cdf: \(x): \(Utils.poisson_cdf(x, 10))")
+		}
+		for x in 0...20 {
+			print("cdf_c: \(x): \(Utils.poisson_cdf_c(x, 10))")
+		}*/
 		//testKalman()
+		var length = 64
+		var d1 = [Double]()
+		var l1 = 3.5 / (140.0 / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize)) 
+		for x in 0...length - 1 {
+			d1.append(log(Utils.poisson_pdf(x, l1)))
+			//d1.append(Utils.normalDistribution(Double(x), l1, 0.01 * l1 * l1))
+		}
+		var d2 = [Double]()
+		var l2 = 12.75 / (140.0 / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize))
+		for x in 0...length - 1 {
+			d2.append(log(Utils.poisson_pdf(x, l2)))
+			//d2.append(Utils.normalDistribution(Double(x), l2, 0.01 * l2 * l2))
+		}
+		var d3 = [Double](count: length, repeatedValue: 0.0)
+		vDSP_convD(d1, 1, d2, 1, &d3, 1, vDSP_Length(length), vDSP_Length(length))
+		d3 = logConvolve(d1, d2, length)
+		var d4 = [Double]()
+		var l3 = l1 + l2
+		for x in 0...length - 1 {
+			d4.append(log(Utils.poisson_pdf(x, l3)))
+			//d4.append(Utils.normalDistribution(Double(x), l3, 0.01 * l3 * l3))
+		}
+		for x in 0...length - 1 {
+			print("\(x): \((d3[x]))")
+		}
+		print("   ")
+		for x in 0...length - 1 {
+			print("\(x): \((d4[x]))")
+		}
+		
 		do {
 			try print(self.controller.start())
 		}
@@ -430,6 +481,29 @@ class ScoreFollowerTests: XCTestCase {
 		}
         sleep(10000)
     }
+	
+	func logConvolve(d1: [Double], _ d2: [Double], _ length: Int) -> [Double] {
+		var d3 = [Double](count: length, repeatedValue: 0.0)
+		for t in 0..<length {
+			var tmp = [Double](count: t + 1, repeatedValue: 0.0)
+			for u in 0...t {
+				tmp[u] = d1[u] + d2[t - u]
+			}
+			d3[t] = Utils.logSumExp(tmp)
+		}
+		return d3
+	}
+
+	
+	func convolve(d1: [Double], _ d2: [Double], _ length: Int) -> [Double] {
+		var d3 = [Double](count: length, repeatedValue: 0.0)
+		for t in 0..<length {
+			for u in 0...t {
+				d3[t] += d1[u] * d2[t - u]
+			}
+		}
+		return d3
+	}
 	
 	/*func testKalman() {
 		var m1 = Matrix(matrix: [1,2,3,4,7,5,0,8,1], rows: 3, columns: 3)
@@ -456,6 +530,27 @@ class ScoreFollowerTests: XCTestCase {
 		y2 = x2 * w
 		return y1
 	}
+	
+	/*func testPoisson() {
+		self.measureBlock() {
+			for i in 0..<100000 {
+				for j in 0..<50 {
+					Utils.poisson_cdf_c(j, Double(j) / 2.0)
+				}
+			}
+		}
+	}
+	
+	func testGaussian() {
+		self.measureBlock() {
+			for i in 0..<100000 {
+				for j in 0..<50 {
+					0.5 * (1 + erf((Double(j) - 0.5 - Double(j) / 2.0) / sqrt(Double(j))))
+					0.5 * (1 + erf((Double(j) + 0.5 - Double(j) / 2.0) / sqrt(Double(j))))
+				}
+			}
+		}
+	}*/
 	
     /*func testPerformanceExample() {
 		// This is an example of a performance test case.

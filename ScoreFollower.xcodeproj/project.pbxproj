@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6A00B6161A81A6AD0004B1F9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00B6151A81A6AD0004B1F9 /* Matrix.swift */; };
+		6A014EBF1C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */ = {isa = PBXBuildFile; fileRef = 6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */; };
+		6A014EC01C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */ = {isa = PBXBuildFile; fileRef = 6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */; };
 		6A25E0D919F8C9F900AC9DE3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A25E0D719F8C9F900AC9DE3 /* Utils.swift */; };
 		6A25E0DA19F8C9F900AC9DE3 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A25E0D819F8C9F900AC9DE3 /* State.swift */; };
 		6A2A82311A1858F200F4CF6A /* ScoreElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A82301A1858F200F4CF6A /* ScoreElement.swift */; };
@@ -82,6 +84,9 @@
 
 /* Begin PBXFileReference section */
 		6A00B6151A81A6AD0004B1F9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecFuncCephes.cxx; sourceTree = "<group>"; };
+		6A014EBE1C3CC2AB0046559F /* SpecFuncCephes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecFuncCephes.h; sourceTree = "<group>"; };
+		6A014EC11C3CC2DC0046559F /* ScoreFollower-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ScoreFollower-Bridging-Header.h"; path = "ScoreFollower/ScoreFollower-Bridging-Header.h"; sourceTree = "<group>"; };
 		6A25E0D719F8C9F900AC9DE3 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; usesTabs = 1; };
 		6A25E0D819F8C9F900AC9DE3 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; usesTabs = 1; };
 		6A2A82301A1858F200F4CF6A /* ScoreElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreElement.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -97,7 +102,6 @@
 		6AC7E3601BEF0C7F007CD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6AC7E3621BEF0C89007CD0BC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6AC7E3641BEF0C92007CD0BC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		6AE52FFF1A0B067400150FD5 /* ScoreFollower-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ScoreFollower-Bridging-Header.h"; path = "ScoreFollower/ScoreFollower-Bridging-Header.h"; sourceTree = "<group>"; };
 		6AFA6C6919F8C9B30066A5B3 /* ScoreFollower.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScoreFollower.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AFA6C6D19F8C9B30066A5B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6AFA6C6E19F8C9B30066A5B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -135,6 +139,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A014EBC1C3CC2AB0046559F /* Root Math */ = {
+			isa = PBXGroup;
+			children = (
+				6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */,
+				6A014EBE1C3CC2AB0046559F /* SpecFuncCephes.h */,
+			);
+			path = "Root Math";
+			sourceTree = "<group>";
+		};
 		6A659A1D1BEEFD9D008E4777 /* TPCircularBuffer */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,10 +174,11 @@
 		6AFA6C6019F8C9B30066A5B3 = {
 			isa = PBXGroup;
 			children = (
+				6A014EC11C3CC2DC0046559F /* ScoreFollower-Bridging-Header.h */,
+				6A014EBC1C3CC2AB0046559F /* Root Math */,
 				6AC7E3641BEF0C92007CD0BC /* Accelerate.framework */,
 				6AC7E3621BEF0C89007CD0BC /* AVFoundation.framework */,
 				6AC7E3601BEF0C7F007CD0BC /* AudioToolbox.framework */,
-				6AE52FFF1A0B067400150FD5 /* ScoreFollower-Bridging-Header.h */,
 				6A659A1D1BEEFD9D008E4777 /* TPCircularBuffer */,
 				6AFA6C6B19F8C9B30066A5B3 /* ScoreFollower */,
 				6AFA6C7F19F8C9B30066A5B3 /* ScoreFollowerTests */,
@@ -274,7 +288,7 @@
 			attributes = {
 				LastSwiftMigration = 0710;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Tristan Yang";
 				TargetAttributes = {
 					6AFA6C6819F8C9B30066A5B3 = {
@@ -368,6 +382,7 @@
 				6A659A221BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */,
 				6A66BE9F1BEEDB77008B8468 /* ScoreFollower.swift in Sources */,
 				6A659A1E1BEEFD9D008E4777 /* README.markdown in Sources */,
+				6A014EBF1C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */,
 				6A79B1A41A035CDC006340B9 /* Score.swift in Sources */,
 				6A00B6161A81A6AD0004B1F9 /* Matrix.swift in Sources */,
 				6A5B13161A81A1CA00C86CDF /* Kalman.swift in Sources */,
@@ -381,6 +396,7 @@
 				6A659A1F1BEEFD9D008E4777 /* README.markdown in Sources */,
 				6AFA6C8319F8C9B40066A5B3 /* ScoreFollowerTests.swift in Sources */,
 				6A659A231BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */,
+				6A014EC01C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */,
 				6A659A211BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +453,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -523,6 +540,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ScoreFollower/ScoreFollower-Bridging-Header.h";
 			};
@@ -543,6 +561,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ScoreFollower/ScoreFollower-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
@@ -562,6 +581,7 @@
 				INFOPLIST_FILE = ScoreFollowerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
 			};
@@ -576,6 +596,7 @@
 				INFOPLIST_FILE = ScoreFollowerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
 			};

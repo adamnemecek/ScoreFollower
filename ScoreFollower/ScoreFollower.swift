@@ -15,10 +15,12 @@ public class ScoreFollower {
 	private var notes = [ScoreElement]()
 	
 	private var tempo: Double
-	private var currentState = 0
+	private var detectedStates = [0]
 	private var currentRange = 0...0
 	private var t = 0
-	private var window = 2.0 * Double(Parameters.sampleRate) / Double(Parameters.windowSize)
+	private var window = 4.0 * Double(Parameters.sampleRate) / Double(Parameters.windowSize)
+	
+	var x = 0
 	
 	public init(score: Score, tempo: Double) {
 		for spectrum in score.noteSpectra {
@@ -33,64 +35,48 @@ public class ScoreFollower {
 			}
 		}
 		self.tempo = tempo / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize)
+		detectedStates.reserveCapacity(states.count * 5)
 	}
 	
-	/*public init(startTempo: Double) {
-		//tempo = startTempo / 60.0 / Double(Parameters.sampleRate) * Double(Parameters.windowSize)
-		states.append(State())
-	}
-	public func addState(notes: [Int], length: Double) {
-		states.append(State(scorePosition: self.length, notes: notes.isEmpty ? Utils.rest : addNotes(notes), previous: states[states.count - 1], length: length, markovian: length == 0))
-		self.length += length
-	}
-	/*public func reset(start: Int) {
-	currentState = start
-	t = 0
-	}*/
-	private func addNotes(notes: [Int]) -> Notes {
-		if let n = allNotes[HashableArray(array: notes)] {
-			return n
-		} else {
-			let n = Notes(notes: notes)
-			allNotes[HashableArray(array: notes)] = n
-			return n
-		}
-	}*/
 	public func update(observation: [Double]) -> Int {
-		currentRange = getWindow()
-		//println(currentRange)
+		
+		currentRange = 0...35//getWindow()
 		var pViterbi = [Double](count: currentRange.endIndex - currentRange.startIndex, repeatedValue: 0.0)
 		for (i, s) in states[currentRange].enumerate() {
 			pViterbi[i] = s.update(observation, tempo, t)
-			//println("    \(i + currentRange.startIndex) \(pViterbi[i])")
 		}
-		//Utils.normalize(&pViterbi)
-		/*for (i, s) in enumerate(states[currentRange]) {
-		s.update(pViterbi[i])
-		}*/
 		t++
 		var vMax = 0.0
 		var iMax = vDSP_Length(0)
 		vDSP_maxviD(pViterbi, 1, &vMax, &iMax, vDSP_Length(pViterbi.count))
-		currentState = currentRange.startIndex + Int(iMax)
-		//currentState = Utils.maxPair(0, end: pViterbi.count) { return pViterbi[$0] }.0 + currentRange.startIndex
-		return currentState
+		detectedStates.append(currentRange.startIndex + Int(iMax))
+		if states[detectedStates[detectedStates.count - 1]].scorePosition % 2 == 0 {
+			var measure = states[detectedStates[detectedStates.count - 1]].scorePosition / 2
+			print("DOWNBEATBEATBEATBEATBEATBEATBEATBEATBEAT \(measure)")
+		}
+		x++
+		if detectedStates[detectedStates.count - 1] == 35 {
+			x++
+			if x > 20 {
+				x = 0
+			}
+		}
+		return detectedStates[detectedStates.count - 1]
 	}
+	
 	public func getWindow() -> Range<Int> {
-		var i1 = currentState
+		var i1 = detectedStates[detectedStates.count - 1]
 		var t = 0.0
 		while ((t < window && i1 > currentRange.startIndex) || i1 > currentRange.startIndex + 1) && i1 > 0 {
 			i1--
 			t += states[i1].length / tempo
 		}
-		var i2 = currentState
+		var i2 = detectedStates[detectedStates.count - 1]
 		t = 0.0
 		while (t < window || i2 < currentRange.endIndex - 1) && i2 < currentRange.endIndex && i2 < states.count - 1 {
 			i2++
 			t += states[i2].length / tempo
 		}
-		//return 0...34
-		//println("\(i1) \(i2)")
 		return i1...i2
 	}
 	

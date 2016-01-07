@@ -26,13 +26,36 @@ public struct Parameters {
 }*/
 public struct Utils {
 	//public static let rest: ScoreElement = Rest()
-	public static func logSumExp(values: [Double], _ max: Double) -> Double {
+	public static func logSumExp(values: [Double]) -> Double {
+		
+		if values.count == 0 {
+			return -Double.infinity
+		}
+		
+		var isZero = true
+		for value in values {
+			if value != -Double.infinity {
+				isZero = false
+				break
+			}
+		}
+		if isZero {
+			return -Double.infinity
+		}
+		
+		var iMax = vDSP_Length(0)
+		var max = 0.0
+		vDSP_maxviD(values, 1, &max, &iMax, vDSP_Length(values.count))
+		max = -max
+		var subValues = [Double](count: values.count, repeatedValue: 0.0)
+		vDSP_vsaddD(values, 1, &max, &subValues, 1, vDSP_Length(values.count))
 		var expValues = [Double](count: values.count, repeatedValue: 0.0)
-		var max = max
-		vDSP_vsaddD(values, 1, &max, &expValues, 1, vDSP_Length(values.count))
+		var count = Int32(values.count)
+		vvexp(&expValues, subValues, &count)
 		var sum = 0.0
 		vDSP_sveD(expValues, 1, &sum, vDSP_Length(expValues.count))
-		return max + log(sum)
+		return -max + log(sum)
+		
 	}
 	public static var A0 = 440.0 / pow(2, 4)
 	public static func noteToFrequency(note: Double) -> Double {
@@ -44,6 +67,34 @@ public struct Utils {
 	public static func normalDistribution(x: Double, _ mean: Double, _ sd: Double) -> Double {
 		return 1.0 / (sd * sqrt(2 * M_PI)) * exp(-(x - mean) * (x - mean) / (2 * sd * sd));
 	}
+	public static func poisson_pdf(n: Int, _ mu: Double) -> Double {
+		if n >  0 {
+			return exp(Double(n) * log(mu) - lgamma(Double(n+1)) - mu)
+		}
+		else  {
+			//  when  n = 0 and mu = 0,  1 is returned
+			if mu >= 0 {
+				return exp(-mu)
+			}
+			// return a nan for mu < 0 since it does not make sense
+			return log(mu);
+		}
+	}
+	public static func poisson_cdf(n: Int, _ mu: Double) -> Double {
+		let a = Double(n) + 1.0
+		return gamma_cdf_c(mu, alpha: a, theta: 1.0)
+	}
+	public static func poisson_cdf_c(n: Int, _ mu: Double) -> Double {
+		let a = Double(n) + 1.0
+		return gamma_cdf(mu, alpha: a, theta: 1.0)
+	}
+	private static func gamma_cdf(x: Double, alpha: Double, theta: Double) -> Double {
+		return igam(alpha, x / theta);
+	}
+	private static func gamma_cdf_c(x: Double, alpha: Double, theta: Double) -> Double {
+		return igamc(alpha, x / theta);
+	}
+	
 	public static let fftsetup = vDSP_create_fftsetupD(vDSP_Length(Parameters.log2size), FFTRadix(kFFTRadix2))
 	public static func fft(observation: [Double]) -> [Double] {
 		
