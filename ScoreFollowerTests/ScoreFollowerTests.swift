@@ -416,11 +416,14 @@ class ScoreFollowerTests: XCTestCase {
 		var b = [1,2,4,5,300,1000]
 		var c = [30,40,50,51,52,420]
 		var d = a
-		d[2] -= 10
+		d[2] -= 10*/
 		var score = Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))
+		var time = 0.0
 		for (i, array) in score.enumerate() {
-			print(i, array)
-		}
+			time += array.1
+			print(time)
+			//print(i, array)
+		}/*
 		print("a\(a)")
 		print(Utils.merge([a,b,c],<))
 		print("ASDFASDFASDFASDFASDFASDFASDFA")
@@ -472,7 +475,7 @@ class ScoreFollowerTests: XCTestCase {
 		for x in 0...length - 1 {
 			print("\(exp(d4[x]))")
 		}
-		
+		//print("windowsize \(Parameters.windowSize)")
 		do {
 			try print(self.controller.start())
 		}

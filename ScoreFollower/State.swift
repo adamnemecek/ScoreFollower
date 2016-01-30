@@ -88,16 +88,7 @@ class MarkovState: State {
 }
 
 class SemiMarkovState: State {
-	enum survivalDistributionMode {
-		case logistic
-		case gaussian
-		case cauchy
-		//case poisson
-		case exponential
-		case exact
-	}
-	var mode = survivalDistributionMode.exact
-	private var varianceFactor = 1.0
+	private var varianceFactor = 0.1
 	private var observationTable = [Double]()
 	init(scorePosition: Double, notes: ScoreElement, previous: State, length: Double) {
 		super.init(scorePosition: scorePosition, notes: notes, previous: previous, length: length)
@@ -114,18 +105,22 @@ class SemiMarkovState: State {
 	}
 	override func transitionFunction(tempo: Double, _ t: Int) -> Double {
 		var transitionTable = observationTable
+		let sd = pow(varianceFactor * length / tempo, 0.5)
 		for u in 0..<observationTable.count {
 			//transitionTable[u] += log(Utils.poisson_pdf(u, length / tempo))
-			transitionTable[u] += log(Utils.gaussian_pdf(u + 1, length / tempo, 0.1))
+			transitionTable[u] += log(Utils.gaussian_pdf(u + 1, length / tempo, sd))
 		}
+		//return Utils.maxPair(transitionTable).1
 		return Utils.logSumExp(transitionTable)
 	}
 	override func viterbiFunction(tempo: Double, _ t: Int) -> Double {
 		var viterbiTable = observationTable
+		let sd = pow(varianceFactor * length / tempo, 0.5)
 		for u in 0..<observationTable.count {
 			//viterbiTable[u] += log(Utils.poisson_cdf_c(u, length / tempo))
-			viterbiTable[u] += log(Utils.gaussian_cdf_c(u + 1, length / tempo, 0.1))
+			viterbiTable[u] += log(Utils.gaussian_cdf_c(u + 1, length / tempo, sd))
 		}
+		//return Utils.maxPair(viterbiTable).1
 		return Utils.logSumExp(viterbiTable)
 		
 		/*let uMax = max(min(Int(2.0 / tempo * length), t - self.startTime), 2)

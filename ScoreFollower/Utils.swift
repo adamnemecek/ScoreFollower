@@ -12,7 +12,7 @@ import Accelerate
 public struct Parameters {
 	public static let harmonics = 10
 	public static let sd = 0.25
-	public static let log2size = 12
+	public static let log2size = 11
 	public static let windowSize = 1 << log2size
 	public static let fftlength = windowSize / 2
 	public static var sampleRate = 48000
@@ -57,6 +57,12 @@ public struct Utils {
 		return -max + log(sum)
 		
 	}
+	public static func maxPair(values: [Double]) -> (Int, Double) {
+		var iMax: vDSP_Length = 0
+		var vMax = 0.0
+		vDSP_maxviD(values, 1, &vMax, &iMax, vDSP_Length(values.count))
+		return (Int(iMax), vMax)
+	}
 	public static var A0 = 440.0 / pow(2, 4)
 	public static func noteToFrequency(note: Double) -> Double {
 		return A0 * pow(2, (note - 9) / 12);
@@ -95,16 +101,16 @@ public struct Utils {
 		return igamc(alpha, x / theta);
 	}
 	
-	public static func gaussian_pdf(x: Int, _ mu: Double, _ factor: Double) -> Double {
-		let a = 0.5 * (1 + erf((Double(x) - 0.5 - mu) / sqrt(factor * mu * 2)))
-		let b = 0.5 * (1 + erf((Double(x) + 0.5 - mu) / sqrt(factor * mu * 2)))
+	public static func gaussian_pdf(x: Int, _ mu: Double, _ sd: Double) -> Double {
+		let a = 0.5 * (1 + erf((Double(x) - 0.5 - mu) / (sd * sqrt(mu * 2))))
+		let b = 0.5 * (1 + erf((Double(x) + 0.5 - mu) / (sd * sqrt(mu * 2))))
 		return b - a
 	}
-	public static func gaussian_cdf(x: Int, _ mu: Double, _ factor: Double) -> Double {
-		return 0.5 * (1 + erf((Double(x) - mu) / sqrt(factor * mu * 2)))
+	public static func gaussian_cdf(x: Int, _ mu: Double, _ sd: Double) -> Double {
+		return 0.5 * (1 + erf((Double(x) - mu) / (sd * sqrt(mu * 2))))
 	}
-	public static func gaussian_cdf_c(x: Int, _ mu: Double, _ factor: Double) -> Double {
-		return 0.5 * (1 + erf((-Double(x) + mu) / sqrt(factor * mu * 2)))
+	public static func gaussian_cdf_c(x: Int, _ mu: Double, _ sd: Double) -> Double {
+		return 0.5 * (1 + erf((-Double(x) + mu) / (sd * sqrt(mu * 2))))
 	}
 	
 	public static let fftsetup = vDSP_create_fftsetupD(vDSP_Length(Parameters.log2size), FFTRadix(kFFTRadix2))
@@ -253,10 +259,10 @@ public struct Utils {
 		var currentNotes = [Int]()
 		var lastTimeStamp = 0.0
 		for note in midiNotes {
-			if note.0 != lastTimeStamp {
+			if note.0 - lastTimeStamp > 0.05 {
 				scoreNotes.append((currentNotes, note.0 - lastTimeStamp))
+				lastTimeStamp = note.0
 			}
-			lastTimeStamp = note.0
 			if note.2 {
 				currentNotes.append(note.1 - 12)
 			} else {

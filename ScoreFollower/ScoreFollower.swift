@@ -52,10 +52,10 @@ public class ScoreFollower {
 		detectedStates.append(currentRange.startIndex + Int(iMax))
 		if states[detectedStates[detectedStates.count - 1]].scorePosition % 2 == 0 {
 			var measure = states[detectedStates[detectedStates.count - 1]].scorePosition / 2
-			print("DOWNBEATBEATBEATBEATBEATBEATBEATBEATBEAT \(measure)")
+			//print("DOWNBEATBEATBEATBEATBEATBEATBEATBEATBEAT \(measure)")
 		}
 		x++
-		if detectedStates[detectedStates.count - 1] == 35 {
+		if detectedStates[detectedStates.count - 1] == 1113 {
 			x++
 			if x > 20 {
 				x = 0
