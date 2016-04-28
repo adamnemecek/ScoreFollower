@@ -12,10 +12,12 @@ import Accelerate
 public struct Parameters {
 	public static let harmonics = 10
 	public static let sd = 0.25
-	public static let log2size = 11
-	public static let windowSize = 1 << log2size
-	public static let fftlength = windowSize / 2
-	public static var sampleRate = 48000
+	public static let log2size = 12
+	public static let windowSize = 1 << log2size	//4096
+	public static let fftlength = windowSize / 2	//2048
+	public static let sampleRate = 44100
+	public static let frameLength = 1.0 * Double(windowSize) / Double(sampleRate)
+	public static let concertPitch = 441.0
 }
 
 
@@ -26,6 +28,41 @@ public struct Parameters {
 }*/
 public struct Utils {
 	//public static let rest: ScoreElement = Rest()
+	public static func normalize(array: [Double]) -> [Double] {
+		var sum = 0.0
+		vDSP_sveD(array, 1, &sum, vDSP_Length(array.count))
+		var newArray = [Double](count: array.count, repeatedValue: 0.0)
+		vDSP_vsdivD(array, 1, &sum, &newArray, 1, vDSP_Length(array.count))
+		return newArray
+	}
+	private static var r2 = 0.0
+	private static var needNewGaussian = true
+	public static func randomGaussian() -> Double {
+		if !needNewGaussian {
+			needNewGaussian = true
+			return r2
+		}
+		var x1, x2, w: Double
+		repeat {
+			x1 = 2.0 * drand48() - 1.0;
+			x2 = 2.0 * drand48() - 1.0;
+			w = x1 * x1 + x2 * x2;
+		} while ( w >= 1.0 );
+		
+		w = sqrt((-2.0 * log(w)) / w);
+		r2 = x2 * w;
+		return x1 * w;
+	}
+	public static func randomGaussian(μ: Double, _ σ: Double) -> Double {
+		return randomGaussian() * σ + μ
+	}
+	public static func gaussianDistribution(n: Int, μ: Double, σ: Double) -> [Double] {
+		var array = [Double](count: n, repeatedValue: 0.0)
+		for i in 0..<n {
+			array[i] = randomGaussian() * σ + μ
+		}
+		return array
+	}
 	public static func logSumExp(values: [Double]) -> Double {
 		
 		if values.isEmpty {
@@ -63,7 +100,7 @@ public struct Utils {
 		vDSP_maxviD(values, 1, &vMax, &iMax, vDSP_Length(values.count))
 		return (Int(iMax), vMax)
 	}
-	public static var A0 = 440.0 / pow(2, 4)
+	public static var A0 = Parameters.concertPitch / pow(2, 4)
 	public static func noteToFrequency(note: Double) -> Double {
 		return A0 * pow(2, (note - 9) / 12);
 	}
@@ -114,7 +151,7 @@ public struct Utils {
 	}
 	
 	public static let fftsetup = vDSP_create_fftsetupD(vDSP_Length(Parameters.log2size), FFTRadix(kFFTRadix2))
-	public static func fft(observation: [Double]) -> [Double] {
+	public static func fft(samples: [Double]) -> [Double] {
 		
 		/*var observation = observation
 		
@@ -125,20 +162,12 @@ public struct Utils {
 		var realp = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
 		var imagp = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
 		var splitComplex = DSPDoubleSplitComplex(realp: &realp, imagp: &imagp)
-		vDSP_ctozD(UnsafeMutablePointer(observation), 2, &splitComplex, 1, vDSP_Length(Parameters.fftlength))
+		vDSP_ctozD(UnsafeMutablePointer(samples), 2, &splitComplex, 1, vDSP_Length(Parameters.fftlength))
 		vDSP_fft_zripD(fftsetup, &splitComplex, 1, vDSP_Length(Parameters.log2size), FFTDirection(kFFTDirection_Forward))
 		splitComplex.realp[0] = 0
 		
-		var sum = 0.0
-		vDSP_svesqD(splitComplex.realp, 1, &sum, vDSP_Length(Parameters.fftlength))
-		var sum1 = 0.0
-		vDSP_svesqD(splitComplex.imagp, 1, &sum1, vDSP_Length(Parameters.fftlength))
-		sum = sqrt(sum + sum1)
-		
 		var fft = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
-		vDSP_zvabsD(&splitComplex, 1, &fft, 1, vDSP_Length(Parameters.fftlength))
-		
-		vDSP_vsdivD(fft, 1, &sum, &fft, 1, vDSP_Length(Parameters.fftlength))
+		vDSP_zvmagsD(&splitComplex, 1, &fft, 1, vDSP_Length(Parameters.fftlength))
 		
 		return fft
 	}
@@ -149,7 +178,7 @@ public struct Utils {
 			var octave: Int = 0
 			for i in 2...Parameters.harmonics {
 				if (i & (i - 1)) == 0 {
-					octave++
+					octave += 1
 					//addFrequency(&frequencies, note: Double(note + 12 * octave), power: 1.0 / Double(i))
                     addFrequency(&frequencies, Double(note + 12 * octave), 1.0 / pow(2.0, Double(i - 1)))
 				}
@@ -206,7 +235,7 @@ public struct Utils {
 		
 		var notes = [[(Double, Int, Bool)]]()
 		
-		var sequence = MusicSequence()
+		var sequence: MusicSequence = nil
 		NewMusicSequence(&sequence)
 		MusicSequenceFileLoad(sequence, URL, MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
 		
@@ -291,11 +320,18 @@ public struct Utils {
 			if value == nil {
 				done = true
 			} else {
-				startPositions[value.0]++
+				startPositions[value.0] += 1
 				mergedArray.append(value.1)
 				value = nil
 			}
 		}
 		return mergedArray
 	}
+	
+	public static func noteName(pitch: Int) -> String {
+		let note = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"][pitch % 12]
+		let octave = String(pitch / 12)
+		return note + octave
+	}
+	
 }

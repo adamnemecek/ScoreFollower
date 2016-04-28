@@ -2,67 +2,82 @@
 //  Score.swift
 //  ScoreFollower
 //
-//  Created by Tristan Yang on 10/30/14.
-//  Copyright (c) 2014 Tristan Yang. All rights reserved.
+//  Created by Tristan Yang on 2/16/16.
+//  Copyright © 2016 Tristan Yang. All rights reserved.
 //
 
 import Foundation
 import Accelerate
 
-public class Score {
-	//private var states = [State]()
-	//private var allNotes: [HashableArray<Int>: Notes] = [:]
-	
-	let length: Double
-	let notes: [HashableArray<Int>: Int]
-	public let noteSpectra: [[Double]]
-	public let states: [(Int, Double, Double)]
-	
-	public init(_ allNotes: [([Int], Double)]) {
+public protocol Score {
+	//var tempo: Double { get }
+	var length: Double { get }
+	var instrumentGroups: [NoteTracker.Type] { get }	//IsPedaled
+	func getOnsets(position: Double) -> HalfOpenInterval<Double>
+	func getNotes(instrumentGroup: Int, _ position: Double) -> [Int: NoteGroup]
+}
+public struct PianoScore: Score {
+	//public let tempo: Double
+	public let length: Double
+	public let instrumentGroups: [NoteTracker.Type] = [PedaledNoteTracker.self]
+	private let onsets: Timeline<Bool>
+	private let timeline: Timeline<(Int, NoteGroup)>
+	private let noteGroups: [NoteGroup]
+	public init(sequence: MusicSequence) {
 		
 		var length = 0.0
-		var notes: [HashableArray<Int>: Int] = [:]
-		var noteSpectra = [[Double]]()
-		var states = [(Int, Double, Double)]()
+		var noteGroups = [NoteGroup]()
+		var timeline = Timeline<(Int, NoteGroup)>(timestep: 0.25)
 		
-		notes[HashableArray(array: [])] = 0
-		noteSpectra.append(Utils.pinkNoise)
-		var i = 1
-		for(n, l) in allNotes {
-			if let n = notes[HashableArray(array: n)] {
-				states.append((n, length, l))
-			} else {
-				noteSpectra.append(Utils.frequencyTemplate(n))
-				notes[HashableArray(array: n)] = noteSpectra.count - 1
-				states.append((i, length, l))
-				i++
+		let templates = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("SpectralTemplates", ofType: "plist")!)!["piano"] as! [[Double]]
+		for i in 0..<templates.count {
+			var sqrtSpectrum = [Double](count: templates[i].count, repeatedValue: 0.0)
+			vvsqrt(&sqrtSpectrum, templates[i], [Int32(sqrtSpectrum.count)])
+			noteGroups.append(PianoNote(pitch: i, spectrum: templates[i]))
+		}
+		
+		var trackCount: UInt32 = 0
+		MusicSequenceGetTrackCount(sequence, &trackCount)
+		var track: MusicTrack = nil
+		var iterator: MusicEventIterator = nil
+		var index = 0
+		for i in 0...trackCount {
+			MusicSequenceGetIndTrack(sequence, i, &track)
+			NewMusicEventIterator(track, &iterator)
+			var hasNext: DarwinBoolean = false
+			MusicEventIteratorHasNextEvent(iterator, &hasNext)
+			var timeStamp: MusicTimeStamp = 0
+			var eventType: MusicEventType = 0
+			var eventData: UnsafePointer<Void> = nil
+			var eventDataSize: UInt32 = 0
+			while hasNext {
+				MusicEventIteratorGetEventInfo(iterator, &timeStamp, &eventType, &eventData, &eventDataSize)
+				if eventType == kMusicEventType_MIDINoteMessage {
+					let noteData = UnsafePointer<MIDINoteMessage>(eventData)
+					timeline.insert((index, noteGroups[Int(noteData.memory.note) - 12]), Double(timeStamp)..<Double(timeStamp) + Double(noteData.memory.duration))
+					length = max(length, Double(timeStamp) + Double(noteData.memory.duration))
+					index += 1
+				}
+				MusicEventIteratorNextEvent(iterator)
+				MusicEventIteratorHasCurrentEvent(iterator, &hasNext)
 			}
-			length += l
 		}
 		
-		self.notes = notes
-		self.noteSpectra = noteSpectra
-		self.states = states
+		onsets = timeline.collapse({$0.isEmpty})
+		
 		self.length = length
+		self.noteGroups = noteGroups
+		self.timeline = timeline
 		
 	}
-	
-}
-
-class HashableArray<T: Hashable>: Hashable {
-	var array: [T]
-	init(array: [T]) {
-		self.array = array
-	}
-	var hashValue: Int {
-		var hashCode = 1
-		for i in array {
-			hashCode = 31 &* hashCode &+ i.hashValue
+	public func getNotes(instrumentGroup: Int, _ position: Double) -> [Int: NoteGroup] {
+		return timeline[position].reduce([Int: NoteGroup]()) { dictionary, event in
+			var newDict = dictionary
+			newDict[event.0.0] = event.0.1
+			return newDict
 		}
-		return hashCode
 	}
-}
-
-func ==<T: Hashable>(lhs: HashableArray<T>, rhs: HashableArray<T>) -> Bool {
-	return lhs.array == rhs.array
+	public func getOnsets(position: Double) -> HalfOpenInterval<Double> {
+		return onsets[position][0].1
+	}
 }

@@ -43,12 +43,22 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6AFA6C7B19F8C9B30066A5B3"
                BuildableName = "ScoreFollowerTests.xctest"
                BlueprintName = "ScoreFollowerTests"
+               ReferencedContainer = "container:ScoreFollower.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6A88B5451CB6324200E2380F"
+               BuildableName = "ScoreFollowerModuleTests.xctest"
+               BlueprintName = "ScoreFollowerModuleTests"
                ReferencedContainer = "container:ScoreFollower.xcodeproj">
             </BuildableReference>
          </TestableReference>

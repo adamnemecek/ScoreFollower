@@ -9,9 +9,34 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>SpectralTemplateCreator.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>6A88B5451CB6324200E2380F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6AA7E8621C8D152C00062A70</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6AA7E8701C8D16C000062A70</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6AA7E87B1C8D175A00062A70</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6AFA6C6819F8C9B30066A5B3</key>
 		<dict>
 			<key>primary</key>

@@ -42,7 +42,7 @@ class ScoreFollowerTests: XCTestCase {
 	var newsamples: [Float] = [Float](count: 100, repeatedValue: 0.0)
 	var duplicate = false
 	//var score = ScoreFollower(score: Score(ScoreFollowerTests.initializeSchubert()), tempo: 280) // = Score(startTempo: 160)
-	var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))), tempo: 140)
+	//var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"))), tempo: 140)
 	//var score = ScoreFollower(score: Score(Utils.parseMIDI(NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sacrintr.mid"))), tempo: 54)
 	/*var schubert = [
 	
@@ -235,13 +235,13 @@ class ScoreFollowerTests: XCTestCase {
 			self.duplicate = false
 			exit(1)
 		}*/
-		var fft = Utils.fft(samples)
+		//var fft = Utils.fft(samples)
 		//Utils.normalize(&fft)
 		/*for i in fft{
 			println(i)
 		}
 		exit(0)*/
-		print(score.update(fft))
+		//print(score.update(fft))
 		return
 		//var floor = fft.reduce(Double(Int.max), min)
 		//var floor = Utils.sum(2000, end: 2048) { return fft[$0] } / 48.0

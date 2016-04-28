@@ -10,19 +10,27 @@
 		6A00B6161A81A6AD0004B1F9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00B6151A81A6AD0004B1F9 /* Matrix.swift */; };
 		6A014EBF1C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */ = {isa = PBXBuildFile; fileRef = 6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */; };
 		6A014EC01C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */ = {isa = PBXBuildFile; fileRef = 6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */; };
+		6A0570691C740CA50065859E /* ScoreFollower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0570681C740CA50065859E /* ScoreFollower.swift */; };
+		6A05706B1C741ABC0065859E /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A05706A1C741ABC0065859E /* Score.swift */; };
 		6A25E0D919F8C9F900AC9DE3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A25E0D719F8C9F900AC9DE3 /* Utils.swift */; };
-		6A25E0DA19F8C9F900AC9DE3 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A25E0D819F8C9F900AC9DE3 /* State.swift */; };
-		6A2A82311A1858F200F4CF6A /* ScoreElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A82301A1858F200F4CF6A /* ScoreElement.swift */; };
+		6A294A811CA3683D00F14F47 /* SpectralTemplates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A294A801CA3683D00F14F47 /* SpectralTemplates.plist */; };
 		6A5B13161A81A1CA00C86CDF /* Kalman.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5B13151A81A1CA00C86CDF /* Kalman.swift */; };
+		6A6527F31C5C8BB200101D65 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6527F21C5C8BB200101D65 /* State.swift */; };
+		6A6527F51C5C8BC800101D65 /* ParticleFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6527F41C5C8BC800101D65 /* ParticleFilter.swift */; };
 		6A659A1E1BEEFD9D008E4777 /* README.markdown in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A181BEEFD9D008E4777 /* README.markdown */; };
 		6A659A1F1BEEFD9D008E4777 /* README.markdown in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A181BEEFD9D008E4777 /* README.markdown */; };
 		6A659A201BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A191BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c */; };
 		6A659A211BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A191BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c */; };
 		6A659A221BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A1B1BEEFD9D008E4777 /* TPCircularBuffer.c */; };
 		6A659A231BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A1B1BEEFD9D008E4777 /* TPCircularBuffer.c */; };
-		6A66BE9F1BEEDB77008B8468 /* ScoreFollower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A66BE9E1BEEDB77008B8468 /* ScoreFollower.swift */; };
 		6A66BEAE1BEEF414008B8468 /* libTheAmazingAudioEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A66BEA71BEEF3C9008B8468 /* libTheAmazingAudioEngine.a */; };
-		6A79B1A41A035CDC006340B9 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A79B1A31A035CDC006340B9 /* Score.swift */; };
+		6A6793B11CB8C23700AB8C01 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A998E301CB5DFAA00FDFE7F /* Timeline.swift */; };
+		6A88B5491CB6324200E2380F /* ScoreFollowerModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A88B5481CB6324200E2380F /* ScoreFollowerModuleTests.swift */; };
+		6A998E311CB5DFAA00FDFE7F /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A998E301CB5DFAA00FDFE7F /* Timeline.swift */; };
+		6AA7E87F1C8D175A00062A70 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA7E87E1C8D175A00062A70 /* main.swift */; };
+		6AA7E8901C8D1C8000062A70 /* Templates.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6AA7E8881C8D1AD000062A70 /* Templates.wav */; };
+		6AC623A31CA6481B00A2B70E /* NoteGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC623A21CA6481B00A2B70E /* NoteGroup.swift */; };
+		6AC623A71CA648FB00A2B70E /* NoteTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC623A61CA648FB00A2B70E /* NoteTracker.swift */; };
 		6AC7E3611BEF0C7F007CD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC7E3601BEF0C7F007CD0BC /* AudioToolbox.framework */; };
 		6AC7E3631BEF0C89007CD0BC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC7E3621BEF0C89007CD0BC /* AVFoundation.framework */; };
 		6AC7E3651BEF0C92007CD0BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC7E3641BEF0C92007CD0BC /* Accelerate.framework */; };
@@ -66,6 +74,13 @@
 			remoteGlobalIDString = 4C215CEB1523A7D500D36CAD;
 			remoteInfo = TheAmazingAudioEngine;
 		};
+		6A88B54B1CB6324200E2380F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AFA6C6119F8C9B30066A5B3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AFA6C6819F8C9B30066A5B3;
+			remoteInfo = ScoreFollower;
+		};
 		6AC7E36A1BEF0CB9007CD0BC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6A66BEA01BEEF3C9008B8468 /* TheAmazingAudioEngine.xcodeproj */;
@@ -82,23 +97,45 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6AA7E87A1C8D175A00062A70 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		6A00B6151A81A6AD0004B1F9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecFuncCephes.cxx; sourceTree = "<group>"; };
 		6A014EBE1C3CC2AB0046559F /* SpecFuncCephes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecFuncCephes.h; sourceTree = "<group>"; };
 		6A014EC11C3CC2DC0046559F /* ScoreFollower-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ScoreFollower-Bridging-Header.h"; path = "ScoreFollower/ScoreFollower-Bridging-Header.h"; sourceTree = "<group>"; };
+		6A0570681C740CA50065859E /* ScoreFollower.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreFollower.swift; sourceTree = "<group>"; };
+		6A05706A1C741ABC0065859E /* Score.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		6A25E0D719F8C9F900AC9DE3 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; usesTabs = 1; };
-		6A25E0D819F8C9F900AC9DE3 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; usesTabs = 1; };
-		6A2A82301A1858F200F4CF6A /* ScoreElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreElement.swift; sourceTree = "<group>"; usesTabs = 1; };
+		6A294A801CA3683D00F14F47 /* SpectralTemplates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SpectralTemplates.plist; sourceTree = "<group>"; };
 		6A5B13151A81A1CA00C86CDF /* Kalman.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kalman.swift; sourceTree = "<group>"; };
+		6A6527F21C5C8BB200101D65 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		6A6527F41C5C8BC800101D65 /* ParticleFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticleFilter.swift; sourceTree = "<group>"; };
 		6A659A181BEEFD9D008E4777 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
 		6A659A191BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "TPCircularBuffer+AudioBufferList.c"; sourceTree = "<group>"; };
 		6A659A1A1BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TPCircularBuffer+AudioBufferList.h"; sourceTree = "<group>"; };
 		6A659A1B1BEEFD9D008E4777 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
 		6A659A1C1BEEFD9D008E4777 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
-		6A66BE9E1BEEDB77008B8468 /* ScoreFollower.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreFollower.swift; sourceTree = "<group>"; };
 		6A66BEA01BEEF3C9008B8468 /* TheAmazingAudioEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TheAmazingAudioEngine.xcodeproj; path = Library/TheAmazingAudioEngine/TheAmazingAudioEngine.xcodeproj; sourceTree = "<group>"; };
-		6A79B1A31A035CDC006340B9 /* Score.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; usesTabs = 1; };
+		6A88B5461CB6324200E2380F /* ScoreFollowerModuleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScoreFollowerModuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A88B5481CB6324200E2380F /* ScoreFollowerModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreFollowerModuleTests.swift; sourceTree = "<group>"; };
+		6A88B54A1CB6324200E2380F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A998E301CB5DFAA00FDFE7F /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		6AA7E87C1C8D175A00062A70 /* SpectralTemplateCreator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpectralTemplateCreator; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AA7E87E1C8D175A00062A70 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		6AA7E8881C8D1AD000062A70 /* Templates.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Templates.wav; sourceTree = "<group>"; };
+		6AC623A21CA6481B00A2B70E /* NoteGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteGroup.swift; sourceTree = "<group>"; };
+		6AC623A61CA648FB00A2B70E /* NoteTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTracker.swift; sourceTree = "<group>"; };
 		6AC7E3601BEF0C7F007CD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6AC7E3621BEF0C89007CD0BC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6AC7E3641BEF0C92007CD0BC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -114,6 +151,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6A88B5431CB6324200E2380F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AA7E8791C8D175A00062A70 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AFA6C6619F8C9B30066A5B3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -171,6 +222,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6A88B5471CB6324200E2380F /* ScoreFollowerModuleTests */ = {
+			isa = PBXGroup;
+			children = (
+				6A88B5481CB6324200E2380F /* ScoreFollowerModuleTests.swift */,
+				6A88B54A1CB6324200E2380F /* Info.plist */,
+			);
+			path = ScoreFollowerModuleTests;
+			sourceTree = "<group>";
+		};
+		6AA7E87D1C8D175A00062A70 /* SpectralTemplateCreator */ = {
+			isa = PBXGroup;
+			children = (
+				6AA7E8881C8D1AD000062A70 /* Templates.wav */,
+				6AA7E87E1C8D175A00062A70 /* main.swift */,
+			);
+			path = SpectralTemplateCreator;
+			sourceTree = "<group>";
+		};
 		6AFA6C6019F8C9B30066A5B3 = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +251,8 @@
 				6A659A1D1BEEFD9D008E4777 /* TPCircularBuffer */,
 				6AFA6C6B19F8C9B30066A5B3 /* ScoreFollower */,
 				6AFA6C7F19F8C9B30066A5B3 /* ScoreFollowerTests */,
+				6AA7E87D1C8D175A00062A70 /* SpectralTemplateCreator */,
+				6A88B5471CB6324200E2380F /* ScoreFollowerModuleTests */,
 				6AFA6C6A19F8C9B30066A5B3 /* Products */,
 				6A66BEA01BEEF3C9008B8468 /* TheAmazingAudioEngine.xcodeproj */,
 			);
@@ -192,6 +263,8 @@
 			children = (
 				6AFA6C6919F8C9B30066A5B3 /* ScoreFollower.app */,
 				6AFA6C7C19F8C9B30066A5B3 /* ScoreFollowerTests.xctest */,
+				6AA7E87C1C8D175A00062A70 /* SpectralTemplateCreator */,
+				6A88B5461CB6324200E2380F /* ScoreFollowerModuleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -199,18 +272,22 @@
 		6AFA6C6B19F8C9B30066A5B3 /* ScoreFollower */ = {
 			isa = PBXGroup;
 			children = (
+				6A294A801CA3683D00F14F47 /* SpectralTemplates.plist */,
 				6A25E0D719F8C9F900AC9DE3 /* Utils.swift */,
 				6A5B13151A81A1CA00C86CDF /* Kalman.swift */,
 				6A00B6151A81A6AD0004B1F9 /* Matrix.swift */,
-				6A25E0D819F8C9F900AC9DE3 /* State.swift */,
-				6A2A82301A1858F200F4CF6A /* ScoreElement.swift */,
-				6A79B1A31A035CDC006340B9 /* Score.swift */,
-				6A66BE9E1BEEDB77008B8468 /* ScoreFollower.swift */,
 				6AFA6C6E19F8C9B30066A5B3 /* AppDelegate.swift */,
 				6AFA6C7319F8C9B30066A5B3 /* Images.xcassets */,
 				6AFA6C7519F8C9B30066A5B3 /* LaunchScreen.xib */,
 				6AFA6C7019F8C9B30066A5B3 /* ScoreFollower.xcdatamodeld */,
 				6AFA6C6C19F8C9B30066A5B3 /* Supporting Files */,
+				6A05706A1C741ABC0065859E /* Score.swift */,
+				6A998E301CB5DFAA00FDFE7F /* Timeline.swift */,
+				6A0570681C740CA50065859E /* ScoreFollower.swift */,
+				6A6527F41C5C8BC800101D65 /* ParticleFilter.swift */,
+				6A6527F21C5C8BB200101D65 /* State.swift */,
+				6AC623A61CA648FB00A2B70E /* NoteTracker.swift */,
+				6AC623A21CA6481B00A2B70E /* NoteGroup.swift */,
 			);
 			path = ScoreFollower;
 			sourceTree = "<group>";
@@ -243,6 +320,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6A88B5451CB6324200E2380F /* ScoreFollowerModuleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A88B5511CB6324200E2380F /* Build configuration list for PBXNativeTarget "ScoreFollowerModuleTests" */;
+			buildPhases = (
+				6A88B5421CB6324200E2380F /* Sources */,
+				6A88B5431CB6324200E2380F /* Frameworks */,
+				6A88B5441CB6324200E2380F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6A88B54C1CB6324200E2380F /* PBXTargetDependency */,
+			);
+			name = ScoreFollowerModuleTests;
+			productName = ScoreFollowerModuleTests;
+			productReference = 6A88B5461CB6324200E2380F /* ScoreFollowerModuleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6AA7E87B1C8D175A00062A70 /* SpectralTemplateCreator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AA7E8801C8D175A00062A70 /* Build configuration list for PBXNativeTarget "SpectralTemplateCreator" */;
+			buildPhases = (
+				6AA7E8781C8D175A00062A70 /* Sources */,
+				6AA7E8791C8D175A00062A70 /* Frameworks */,
+				6AA7E87A1C8D175A00062A70 /* CopyFiles */,
+				6AA7E88F1C8D1C7B00062A70 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpectralTemplateCreator;
+			productName = SpectralTemplateCreator;
+			productReference = 6AA7E87C1C8D175A00062A70 /* SpectralTemplateCreator */;
+			productType = "com.apple.product-type.tool";
+		};
 		6AFA6C6819F8C9B30066A5B3 /* ScoreFollower */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6AFA6C8619F8C9B40066A5B3 /* Build configuration list for PBXNativeTarget "ScoreFollower" */;
@@ -287,10 +400,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0710;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Tristan Yang";
 				TargetAttributes = {
+					6A88B5451CB6324200E2380F = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 6AFA6C6819F8C9B30066A5B3;
+					};
+					6AA7E87B1C8D175A00062A70 = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					6AFA6C6819F8C9B30066A5B3 = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
@@ -321,6 +441,8 @@
 			targets = (
 				6AFA6C6819F8C9B30066A5B3 /* ScoreFollower */,
 				6AFA6C7B19F8C9B30066A5B3 /* ScoreFollowerTests */,
+				6AA7E87B1C8D175A00062A70 /* SpectralTemplateCreator */,
+				6A88B5451CB6324200E2380F /* ScoreFollowerModuleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -350,11 +472,27 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6A88B5441CB6324200E2380F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AA7E88F1C8D1C7B00062A70 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AA7E8901C8D1C8000062A70 /* Templates.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AFA6C6719F8C9B30066A5B3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				6AFA6C7719F8C9B30066A5B3 /* LaunchScreen.xib in Resources */,
+				6A294A811CA3683D00F14F47 /* SpectralTemplates.plist in Resources */,
 				6AFA6C7419F8C9B30066A5B3 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,23 +507,43 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6A88B5421CB6324200E2380F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A6793B11CB8C23700AB8C01 /* Timeline.swift in Sources */,
+				6A88B5491CB6324200E2380F /* ScoreFollowerModuleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AA7E8781C8D175A00062A70 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AA7E87F1C8D175A00062A70 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AFA6C6519F8C9B30066A5B3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A998E311CB5DFAA00FDFE7F /* Timeline.swift in Sources */,
 				6A25E0D919F8C9F900AC9DE3 /* Utils.swift in Sources */,
+				6AC623A31CA6481B00A2B70E /* NoteGroup.swift in Sources */,
 				6AFA6C7219F8C9B30066A5B3 /* ScoreFollower.xcdatamodeld in Sources */,
 				6AFA6C6F19F8C9B30066A5B3 /* AppDelegate.swift in Sources */,
-				6A2A82311A1858F200F4CF6A /* ScoreElement.swift in Sources */,
+				6A6527F31C5C8BB200101D65 /* State.swift in Sources */,
 				6A659A201BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c in Sources */,
-				6A25E0DA19F8C9F900AC9DE3 /* State.swift in Sources */,
 				6A659A221BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */,
-				6A66BE9F1BEEDB77008B8468 /* ScoreFollower.swift in Sources */,
 				6A659A1E1BEEFD9D008E4777 /* README.markdown in Sources */,
+				6A6527F51C5C8BC800101D65 /* ParticleFilter.swift in Sources */,
+				6A05706B1C741ABC0065859E /* Score.swift in Sources */,
 				6A014EBF1C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */,
-				6A79B1A41A035CDC006340B9 /* Score.swift in Sources */,
 				6A00B6161A81A6AD0004B1F9 /* Matrix.swift in Sources */,
 				6A5B13161A81A1CA00C86CDF /* Kalman.swift in Sources */,
+				6A0570691C740CA50065859E /* ScoreFollower.swift in Sources */,
+				6AC623A71CA648FB00A2B70E /* NoteTracker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +566,11 @@
 			isa = PBXTargetDependency;
 			name = TheAmazingAudioEngine;
 			targetProxy = 6A66BEAC1BEEF3FB008B8468 /* PBXContainerItemProxy */;
+		};
+		6A88B54C1CB6324200E2380F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AFA6C6819F8C9B30066A5B3 /* ScoreFollower */;
+			targetProxy = 6A88B54B1CB6324200E2380F /* PBXContainerItemProxy */;
 		};
 		6AC7E36B1BEF0CB9007CD0BC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -433,6 +596,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6A88B54D1CB6324200E2380F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ScoreFollowerModuleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = tristanyang.ScoreFollowerModuleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
+			};
+			name = Debug;
+		};
+		6A88B54E1CB6324200E2380F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ScoreFollowerModuleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = tristanyang.ScoreFollowerModuleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
+			};
+			name = Release;
+		};
+		6AA7E8811C8D175A00062A70 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		6AA7E8821C8D175A00062A70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		6AFA6C8419F8C9B40066A5B3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -605,6 +826,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6A88B5511CB6324200E2380F /* Build configuration list for PBXNativeTarget "ScoreFollowerModuleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A88B54D1CB6324200E2380F /* Debug */,
+				6A88B54E1CB6324200E2380F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6AA7E8801C8D175A00062A70 /* Build configuration list for PBXNativeTarget "SpectralTemplateCreator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AA7E8811C8D175A00062A70 /* Debug */,
+				6AA7E8821C8D175A00062A70 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6AFA6C6419F8C9B30066A5B3 /* Build configuration list for PBXProject "ScoreFollower" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
