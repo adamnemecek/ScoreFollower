@@ -12,12 +12,7 @@ import Accelerate
 public struct Parameters {
 	public static let harmonics = 10
 	public static let sd = 0.25
-	public static let log2size = 12
-	public static let windowSize = 1 << log2size	//4096
-	public static let fftlength = windowSize / 2	//2048
-	public static let sampleRate = 44100
-	public static let frameLength = 1.0 * Double(windowSize) / Double(sampleRate)
-	public static let concertPitch = 441.0
+	
 }
 
 
@@ -28,15 +23,15 @@ public struct Parameters {
 }*/
 public struct Utils {
 	//public static let rest: ScoreElement = Rest()
-	public static func normalize(array: [Double]) -> [Double] {
+	public static func normalize(_ array: [Double]) -> [Double] {
 		var sum = 0.0
 		vDSP_sveD(array, 1, &sum, vDSP_Length(array.count))
-		var newArray = [Double](count: array.count, repeatedValue: 0.0)
+		var newArray = [Double](repeating: 0.0, count: array.count)
 		vDSP_vsdivD(array, 1, &sum, &newArray, 1, vDSP_Length(array.count))
 		return newArray
 	}
-	private static var r2 = 0.0
-	private static var needNewGaussian = true
+	fileprivate static var r2 = 0.0
+	fileprivate static var needNewGaussian = true
 	public static func randomGaussian() -> Double {
 		if !needNewGaussian {
 			needNewGaussian = true
@@ -53,16 +48,17 @@ public struct Utils {
 		r2 = x2 * w;
 		return x1 * w;
 	}
-	public static func randomGaussian(μ: Double, _ σ: Double) -> Double {
+	public static func randomGaussian(_ μ: Double, _ σ: Double) -> Double {
 		return randomGaussian() * σ + μ
 	}
-	public static func gaussianDistribution(n: Int, μ: Double, σ: Double) -> [Double] {
-		var array = [Double](count: n, repeatedValue: 0.0)
+	public static func gaussianDistribution(_ n: Int, μ: Double, σ: Double) -> [Double] {
+		var array = [Double](repeating: 0.0, count: n)
 		for i in 0..<n {
 			array[i] = randomGaussian() * σ + μ
 		}
 		return array
 	}
+	/*
 	public static func logSumExp(values: [Double]) -> Double {
 		
 		if values.isEmpty {
@@ -150,27 +146,7 @@ public struct Utils {
 		return 0.5 * (1 + erf((-Double(x) + mu) / (sd * sqrt(mu * 2))))
 	}
 	
-	public static let fftsetup = vDSP_create_fftsetupD(vDSP_Length(Parameters.log2size), FFTRadix(kFFTRadix2))
-	public static func fft(samples: [Double]) -> [Double] {
-		
-		/*var observation = observation
-		
-		var windowFunction = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
-		vDSP_blkman_windowD(&windowFunction, vDSP_Length(Parameters.fftlength), 0)
-		vDSP_vmulD(observation, 1, windowFunction, 1, &observation, 1, vDSP_Length(Parameters.fftlength))*/
-		
-		var realp = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
-		var imagp = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
-		var splitComplex = DSPDoubleSplitComplex(realp: &realp, imagp: &imagp)
-		vDSP_ctozD(UnsafeMutablePointer(samples), 2, &splitComplex, 1, vDSP_Length(Parameters.fftlength))
-		vDSP_fft_zripD(fftsetup, &splitComplex, 1, vDSP_Length(Parameters.log2size), FFTDirection(kFFTDirection_Forward))
-		splitComplex.realp[0] = 0
-		
-		var fft = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
-		vDSP_zvmagsD(&splitComplex, 1, &fft, 1, vDSP_Length(Parameters.fftlength))
-		
-		return fft
-	}
+	
 	public static func frequencyTemplate(notes: [Int]) -> [Double] {
 		var frequencies = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
 		for (_, note) in notes.enumerate() {
@@ -216,16 +192,7 @@ public struct Utils {
     public static func bhattacharyya(observation: [Double], frequencies: [Double]) -> Double {
         return sum(0, end: observation.count, { sqrt(observation[$0] * frequencies[$0]) })
     }*/
-	public static let pinkNoise = { () -> [Double] in
-		var noise = [Double](count: Parameters.fftlength, repeatedValue: 0.0)
-		for i in 0..<Parameters.fftlength {
-			noise[i] = sqrt(1.0 / (Double(i * Parameters.sampleRate) / Double(Parameters.fftlength) + 1.0))
-		}
-		var sum = 0.0
-		vDSP_svesqD(noise, 1, &sum, vDSP_Length(Parameters.fftlength))
-		vDSP_vsdivD(noise, 1, &sum, &noise, 1, vDSP_Length(Parameters.fftlength))
-		return noise
-		}()
+	
 	/*public static func pSilence(observation: [Double]) -> Double {
 		var dotp = 0.0
 		vDSP_dotprD(observation, 1, pinkNoise, 1, &dotp, vDSP_Length(Parameters.fftlength))
@@ -327,11 +294,20 @@ public struct Utils {
 		}
 		return mergedArray
 	}
-	
-	public static func noteName(pitch: Int) -> String {
+	*/
+	public static func noteName(_ spectrum: [Double]) -> String {
+		var fundamentalPower = 0.0
+		var fundamentalBin: UInt = 0
+		vDSP_maxviD(spectrum, 1, &fundamentalPower, &fundamentalBin, vDSP_Length(Signal.fftlength))
+		let fundamentalFrequency = Double(Int(fundamentalBin) * Signal.sampleRate) / Double(Signal.windowSize)
+		return noteName(fundamentalFrequency)
+	}
+	public static func noteName(_ frequency: Double) -> String {
+		return noteName(Int(round(12 * log(frequency / Signal.concertPitch) / log(2) + 9)))
+	}
+	public static func noteName(_ pitch: Int) -> String {
 		let note = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"][pitch % 12]
 		let octave = String(pitch / 12)
 		return note + octave
 	}
-	
 }

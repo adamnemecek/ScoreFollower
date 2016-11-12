@@ -7,14 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6A00B6161A81A6AD0004B1F9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00B6151A81A6AD0004B1F9 /* Matrix.swift */; };
 		6A014EBF1C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */ = {isa = PBXBuildFile; fileRef = 6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */; };
 		6A014EC01C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */ = {isa = PBXBuildFile; fileRef = 6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */; };
 		6A0570691C740CA50065859E /* ScoreFollower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0570681C740CA50065859E /* ScoreFollower.swift */; };
 		6A05706B1C741ABC0065859E /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A05706A1C741ABC0065859E /* Score.swift */; };
 		6A25E0D919F8C9F900AC9DE3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A25E0D719F8C9F900AC9DE3 /* Utils.swift */; };
 		6A294A811CA3683D00F14F47 /* SpectralTemplates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A294A801CA3683D00F14F47 /* SpectralTemplates.plist */; };
-		6A5B13161A81A1CA00C86CDF /* Kalman.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5B13151A81A1CA00C86CDF /* Kalman.swift */; };
 		6A6527F31C5C8BB200101D65 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6527F21C5C8BB200101D65 /* State.swift */; };
 		6A6527F51C5C8BC800101D65 /* ParticleFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6527F41C5C8BC800101D65 /* ParticleFilter.swift */; };
 		6A659A1E1BEEFD9D008E4777 /* README.markdown in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A181BEEFD9D008E4777 /* README.markdown */; };
@@ -23,6 +21,7 @@
 		6A659A211BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A191BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c */; };
 		6A659A221BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A1B1BEEFD9D008E4777 /* TPCircularBuffer.c */; };
 		6A659A231BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A659A1B1BEEFD9D008E4777 /* TPCircularBuffer.c */; };
+		6A65ADA71CD6D4B60091066D /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A65ADA61CD6D4B60091066D /* Recorder.swift */; };
 		6A66BEAE1BEEF414008B8468 /* libTheAmazingAudioEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A66BEA71BEEF3C9008B8468 /* libTheAmazingAudioEngine.a */; };
 		6A6793B11CB8C23700AB8C01 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A998E301CB5DFAA00FDFE7F /* Timeline.swift */; };
 		6A88B5491CB6324200E2380F /* ScoreFollowerModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A88B5481CB6324200E2380F /* ScoreFollowerModuleTests.swift */; };
@@ -38,6 +37,9 @@
 		6AC7E3671BEF0C9F007CD0BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC7E3641BEF0C92007CD0BC /* Accelerate.framework */; };
 		6AC7E3681BEF0CA4007CD0BC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC7E3621BEF0C89007CD0BC /* AVFoundation.framework */; };
 		6AC7E3691BEF0CAE007CD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC7E3601BEF0C7F007CD0BC /* AudioToolbox.framework */; };
+		6AD095381CFB5EB500DA7716 /* OnsetDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD095371CFB5EB500DA7716 /* OnsetDetector.swift */; };
+		6AED9CFA1D18528100310378 /* FileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AED9CF91D18528100310378 /* FileReader.swift */; };
+		6AED9CFE1D1A541500310378 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AED9CFD1D1A541500310378 /* Signal.swift */; };
 		6AFA6C6F19F8C9B30066A5B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFA6C6E19F8C9B30066A5B3 /* AppDelegate.swift */; };
 		6AFA6C7219F8C9B30066A5B3 /* ScoreFollower.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6AFA6C7019F8C9B30066A5B3 /* ScoreFollower.xcdatamodeld */; };
 		6AFA6C7419F8C9B30066A5B3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AFA6C7319F8C9B30066A5B3 /* Images.xcassets */; };
@@ -110,7 +112,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6A00B6151A81A6AD0004B1F9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		6A014EBD1C3CC2AB0046559F /* SpecFuncCephes.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecFuncCephes.cxx; sourceTree = "<group>"; };
 		6A014EBE1C3CC2AB0046559F /* SpecFuncCephes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecFuncCephes.h; sourceTree = "<group>"; };
 		6A014EC11C3CC2DC0046559F /* ScoreFollower-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ScoreFollower-Bridging-Header.h"; path = "ScoreFollower/ScoreFollower-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -118,7 +119,6 @@
 		6A05706A1C741ABC0065859E /* Score.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		6A25E0D719F8C9F900AC9DE3 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; usesTabs = 1; };
 		6A294A801CA3683D00F14F47 /* SpectralTemplates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SpectralTemplates.plist; sourceTree = "<group>"; };
-		6A5B13151A81A1CA00C86CDF /* Kalman.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kalman.swift; sourceTree = "<group>"; };
 		6A6527F21C5C8BB200101D65 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		6A6527F41C5C8BC800101D65 /* ParticleFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticleFilter.swift; sourceTree = "<group>"; };
 		6A659A181BEEFD9D008E4777 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
@@ -126,6 +126,7 @@
 		6A659A1A1BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TPCircularBuffer+AudioBufferList.h"; sourceTree = "<group>"; };
 		6A659A1B1BEEFD9D008E4777 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
 		6A659A1C1BEEFD9D008E4777 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
+		6A65ADA61CD6D4B60091066D /* Recorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
 		6A66BEA01BEEF3C9008B8468 /* TheAmazingAudioEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TheAmazingAudioEngine.xcodeproj; path = Library/TheAmazingAudioEngine/TheAmazingAudioEngine.xcodeproj; sourceTree = "<group>"; };
 		6A88B5461CB6324200E2380F /* ScoreFollowerModuleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScoreFollowerModuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A88B5481CB6324200E2380F /* ScoreFollowerModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreFollowerModuleTests.swift; sourceTree = "<group>"; };
@@ -139,6 +140,9 @@
 		6AC7E3601BEF0C7F007CD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6AC7E3621BEF0C89007CD0BC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6AC7E3641BEF0C92007CD0BC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		6AD095371CFB5EB500DA7716 /* OnsetDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnsetDetector.swift; sourceTree = "<group>"; };
+		6AED9CF91D18528100310378 /* FileReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileReader.swift; sourceTree = "<group>"; };
+		6AED9CFD1D1A541500310378 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
 		6AFA6C6919F8C9B30066A5B3 /* ScoreFollower.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScoreFollower.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AFA6C6D19F8C9B30066A5B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6AFA6C6E19F8C9B30066A5B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -274,8 +278,7 @@
 			children = (
 				6A294A801CA3683D00F14F47 /* SpectralTemplates.plist */,
 				6A25E0D719F8C9F900AC9DE3 /* Utils.swift */,
-				6A5B13151A81A1CA00C86CDF /* Kalman.swift */,
-				6A00B6151A81A6AD0004B1F9 /* Matrix.swift */,
+				6AED9CFD1D1A541500310378 /* Signal.swift */,
 				6AFA6C6E19F8C9B30066A5B3 /* AppDelegate.swift */,
 				6AFA6C7319F8C9B30066A5B3 /* Images.xcassets */,
 				6AFA6C7519F8C9B30066A5B3 /* LaunchScreen.xib */,
@@ -284,6 +287,7 @@
 				6A05706A1C741ABC0065859E /* Score.swift */,
 				6A998E301CB5DFAA00FDFE7F /* Timeline.swift */,
 				6A0570681C740CA50065859E /* ScoreFollower.swift */,
+				6AD095371CFB5EB500DA7716 /* OnsetDetector.swift */,
 				6A6527F41C5C8BC800101D65 /* ParticleFilter.swift */,
 				6A6527F21C5C8BB200101D65 /* State.swift */,
 				6AC623A61CA648FB00A2B70E /* NoteTracker.swift */,
@@ -303,6 +307,8 @@
 		6AFA6C7F19F8C9B30066A5B3 /* ScoreFollowerTests */ = {
 			isa = PBXGroup;
 			children = (
+				6A65ADA61CD6D4B60091066D /* Recorder.swift */,
+				6AED9CF91D18528100310378 /* FileReader.swift */,
 				6AFA6C8219F8C9B40066A5B3 /* ScoreFollowerTests.swift */,
 				6AFA6C8019F8C9B40066A5B3 /* Supporting Files */,
 			);
@@ -406,6 +412,7 @@
 				TargetAttributes = {
 					6A88B5451CB6324200E2380F = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 6AFA6C6819F8C9B30066A5B3;
 					};
 					6AA7E87B1C8D175A00062A70 = {
@@ -413,9 +420,11 @@
 					};
 					6AFA6C6819F8C9B30066A5B3 = {
 						CreatedOnToolsVersion = 6.0.1;
+						LastSwiftMigration = 0800;
 					};
 					6AFA6C7B19F8C9B30066A5B3 = {
 						CreatedOnToolsVersion = 6.0.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 6AFA6C6819F8C9B30066A5B3;
 					};
 				};
@@ -530,6 +539,7 @@
 			files = (
 				6A998E311CB5DFAA00FDFE7F /* Timeline.swift in Sources */,
 				6A25E0D919F8C9F900AC9DE3 /* Utils.swift in Sources */,
+				6AD095381CFB5EB500DA7716 /* OnsetDetector.swift in Sources */,
 				6AC623A31CA6481B00A2B70E /* NoteGroup.swift in Sources */,
 				6AFA6C7219F8C9B30066A5B3 /* ScoreFollower.xcdatamodeld in Sources */,
 				6AFA6C6F19F8C9B30066A5B3 /* AppDelegate.swift in Sources */,
@@ -540,8 +550,7 @@
 				6A6527F51C5C8BC800101D65 /* ParticleFilter.swift in Sources */,
 				6A05706B1C741ABC0065859E /* Score.swift in Sources */,
 				6A014EBF1C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */,
-				6A00B6161A81A6AD0004B1F9 /* Matrix.swift in Sources */,
-				6A5B13161A81A1CA00C86CDF /* Kalman.swift in Sources */,
+				6AED9CFE1D1A541500310378 /* Signal.swift in Sources */,
 				6A0570691C740CA50065859E /* ScoreFollower.swift in Sources */,
 				6AC623A71CA648FB00A2B70E /* NoteTracker.swift in Sources */,
 			);
@@ -553,7 +562,9 @@
 			files = (
 				6A659A1F1BEEFD9D008E4777 /* README.markdown in Sources */,
 				6AFA6C8319F8C9B40066A5B3 /* ScoreFollowerTests.swift in Sources */,
+				6AED9CFA1D18528100310378 /* FileReader.swift in Sources */,
 				6A659A231BEEFD9D008E4777 /* TPCircularBuffer.c in Sources */,
+				6A65ADA71CD6D4B60091066D /* Recorder.swift in Sources */,
 				6A014EC01C3CC2AB0046559F /* SpecFuncCephes.cxx in Sources */,
 				6A659A211BEEFD9D008E4777 /* TPCircularBuffer+AudioBufferList.c in Sources */,
 			);
@@ -608,6 +619,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tristanyang.ScoreFollowerModuleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
 			};
 			name = Debug;
@@ -625,6 +637,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tristanyang.ScoreFollowerModuleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
 			};
 			name = Release;
@@ -764,6 +777,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ScoreFollower/ScoreFollower-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -785,6 +799,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ScoreFollower/ScoreFollower-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -804,6 +819,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
 			};
 			name = Debug;
@@ -819,6 +835,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "tristanyang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScoreFollower.app/ScoreFollower";
 			};
 			name = Release;

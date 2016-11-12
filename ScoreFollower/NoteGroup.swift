@@ -10,7 +10,7 @@ import Foundation
 
 public protocol NoteGroup {
 	var pitches: [Int] { get }
-	func getSpectrum(duration: Double) -> (spectrum: [Double], weight: Double)
+	func getSpectrum(_ duration: Double) -> (spectrum: [Double], weight: Double)
 }
 
 public struct SustainNoteGroup: NoteGroup {
@@ -20,23 +20,28 @@ public struct SustainNoteGroup: NoteGroup {
 		self.pitches = pitches
 		self.spectrum = spectrum
 	}
-	public func getSpectrum(duration: Double) -> (spectrum: [Double], weight: Double) {
+	public func getSpectrum(_ duration: Double) -> (spectrum: [Double], weight: Double) {
 		return (spectrum, 1)
 	}
 }
 
 public struct PianoNote: NoteGroup {	//Basic exponential decay model
-	private let pitch: Int
+	
+	fileprivate static let highRate = 60.0	// db/s
+	fileprivate static let lowRate = 3.0	// db/s
+	
+	fileprivate let pitch: Int
+	fileprivate let decayRate: Double	// db/s
 	public var pitches: [Int] { get { return [pitch] } }
 	public let spectrum: [Double]
 	public init(pitch: Int, spectrum: [Double]) {
 		self.pitch = pitch
 		self.spectrum = spectrum
+		self.decayRate = (PianoNote.highRate - PianoNote.lowRate) * Double(pitch) / 87.0 + (32 * PianoNote.lowRate - 3 * PianoNote.highRate) / 29.0
 	}
-	public func getSpectrum(duration: Double) -> (spectrum: [Double], weight: Double) {
-		return (spectrum, pow(decayRate(pitch), duration))
-	}
-	private func decayRate(pitch: Int) -> Double {	//Power per second; Around 2 db/s for lowest notes to 10 db/s for highest; linear fit for log rate vs pitch
-		return 0.7 * exp(-Double(pitch) / 50.0)
+	public func getSpectrum(_ duration: Double) -> (spectrum: [Double], weight: Double) {
+		let decay = decayRate * duration
+		return (spectrum, 1)
+		return (spectrum, pow(10, -decay / 10.0))
 	}
 }

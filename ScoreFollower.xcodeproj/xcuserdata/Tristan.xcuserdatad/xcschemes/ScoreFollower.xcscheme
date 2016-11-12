@@ -43,7 +43,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "YES">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6AFA6C7B19F8C9B30066A5B3"
@@ -51,9 +51,20 @@
                BlueprintName = "ScoreFollowerTests"
                ReferencedContainer = "container:ScoreFollower.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ScoreFollowerTests/testFromFile()">
+               </Test>
+               <Test
+                  Identifier = "ScoreFollowerTests/testLive()">
+               </Test>
+               <Test
+                  Identifier = "ScoreFollowerTests/testScoreFollower()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6A88B5451CB6324200E2380F"

@@ -8,11 +8,11 @@
 
 import Foundation
 
-public class NoteTracker {
-	private var score: Score
-	private var instrumentGroup: Int
-	private var position: Double
-	private var notes: [Int: (noteGroup: NoteGroup, duration: Double)]
+open class NoteTracker {
+	fileprivate var score: Score
+	fileprivate var instrumentGroup: Int
+	fileprivate var position: Double
+	fileprivate var notes: [Int: (noteGroup: NoteGroup, duration: Double)]
 	public convenience required init(score: Score, instrumentGroup: Int, position: Double) {
 		var notes = [Int: (noteGroup: NoteGroup, duration: Double)]()
 		for (index, noteGroup) in score.getNotes(instrumentGroup, position) {
@@ -26,7 +26,7 @@ public class NoteTracker {
 		self.position = position
 		self.notes = notes
 	}
-	public func update(newPosition: Double) -> [(spectrum: [Double], weight: Double)] {
+	open func update(_ newPosition: Double, _ Δt: Double) -> [(spectrum: [Double], weight: Double)] {
 		position = newPosition
 		var newNotes = score.getNotes(instrumentGroup, position)
 		for (index, noteGroup) in newNotes where notes[index] == nil {
@@ -35,19 +35,19 @@ public class NoteTracker {
 		for index in notes.keys where newNotes[index] == nil {
 			notes[index] = nil
 		}
-		for var noteGroup in notes.values {
-			noteGroup.duration += Parameters.frameLength
+		for index in notes.keys {
+			notes[index]!.duration += Δt
 		}
-		return notes.values.map { $0.noteGroup.getSpectrum($0.duration) }
+		return notes.values.map { $0.noteGroup.getSpectrum($0.duration - Δt) }
 	}
-	public func copy() -> Self {
-		return self.dynamicType.init(score: score, instrumentGroup: instrumentGroup, position: position, notes: notes)
+	open func copy() -> Self {
+		return type(of: self).init(score: score, instrumentGroup: instrumentGroup, position: position, notes: notes)
 	}
 }
 
-public class PedaledNoteTracker: NoteTracker {
-	private var pedalOn: Bool
-	private var pedalPoint: Double
+open class PedaledNoteTracker: NoteTracker {
+	fileprivate var pedalOn: Bool
+	fileprivate var pedalPoint: Double
 	public required init(score: Score, instrumentGroup: Int, position: Double, notes: [Int : (noteGroup: NoteGroup, duration: Double)]) {
 		pedalOn = false
 		pedalPoint = position
@@ -58,7 +58,7 @@ public class PedaledNoteTracker: NoteTracker {
 		self.pedalPoint = pedalPoint
 		super.init(score: score, instrumentGroup: instrumentGroup, position: position, notes: notes)
 	}
-	public override func update(newPosition: Double) -> [(spectrum: [Double], weight: Double)] {
+	open override func update(_ newPosition: Double, _ Δt: Double) -> [(spectrum: [Double], weight: Double)] {
 		position = newPosition
 		changePedal()
 		var newNotes = score.getNotes(instrumentGroup, position)
@@ -71,15 +71,15 @@ public class PedaledNoteTracker: NoteTracker {
 			}
 			pedalPoint = position
 		}
-		for var noteGroup in notes.values {
-			noteGroup.duration += Parameters.frameLength
+		for index in notes.keys {
+			notes[index]!.duration += Δt
 		}
-		return notes.values.map { $0.noteGroup.getSpectrum($0.duration) }
+		return notes.values.map { $0.noteGroup.getSpectrum($0.duration - Δt) }
 	}
-	private func changePedal() {
+	fileprivate func changePedal() {
 		
 	}
-	public override func copy() -> Self {
-		return self.dynamicType.init(score: score, instrumentGroup: instrumentGroup, position: position, notes: notes, pedalOn: pedalOn, pedalPoint: pedalPoint)
+	open override func copy() -> Self {
+		return type(of: self).init(score: score, instrumentGroup: instrumentGroup, position: position, notes: notes, pedalOn: pedalOn, pedalPoint: pedalPoint)
 	}
 }

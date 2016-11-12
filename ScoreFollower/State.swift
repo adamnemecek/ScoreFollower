@@ -11,28 +11,30 @@ import Accelerate
 
 public protocol State: class {
 	associatedtype Observation
-	func predict(Δt: Double)
-	func update(observation: Observation) -> Double
+	func predict(_ Δt: Double)
+	func update(_ observation: Observation) -> Double
 	func copy() -> Self
 }
 
-public class ScoreState: State {
+open class ScoreState: State {
 	
-	public typealias Observation = (spectrum: [Double], pOnset: Double)
+	public typealias Observation = (spectrum: [Double], pOnset: Double, logTempo: Double)
 	
-	private static let onsetWidth = 0.05 //seconds
-	private static let silenceTemplate = Utils.pinkNoise
+	fileprivate static let onsetWidth = 0.05 //seconds
+	fileprivate static let silenceTemplate = Signal.pinkNoise
 	
-	public private(set) var position: Double
-	public private(set) var logTempo: Double
+	open fileprivate(set) var position: Double
+	open fileprivate(set) var logTempo: Double
 	
-	private var score: Score
-	private var notes: [NoteTracker]
+	fileprivate var score: Score
+	fileprivate var notes: [NoteTracker]
 	
-	private var pOnset: Double
-	private var spectra: [[Double]]
-	private var weights: [Double]
-	private var template: [Double]
+	fileprivate var pOnset: Double
+	fileprivate var spectra: [[Double]]
+	fileprivate var weights: [Double]
+	fileprivate var template: [Double]
+	
+	fileprivate var spectrum = [Double](repeating: 0.0, count: ScoreFollower.spectrumLength)
 	
 	public required init(position: Double, logTempo: Double, score: Score, notes: [NoteTracker]) {
 		
@@ -43,24 +45,24 @@ public class ScoreState: State {
 		self.notes = notes
 		
 		self.pOnset = 0
-		self.spectra = [[Double]]()
-		self.weights = [Double]()
-		self.template = [Double]()
-		template.reserveCapacity(Parameters.fftlength)
+		self.spectra = []
+		self.weights = []
+		self.template = [Double](repeating: 0.0, count: ScoreFollower.spectrumLength)
+		//template.reserveCapacity(Parameters.fftlength)
 		
 	}
 	
-	public func predict(Δt: Double) {
+	open func predict(_ Δt: Double) {
 		
 		position += exp(logTempo) * Δt
 		
-		position += Utils.randomGaussian(0, 0.01)
-		logTempo += Utils.randomGaussian(0, 0.01)
+		position += Utils.randomGaussian(0, 0.02)
+		logTempo += Utils.randomGaussian(0, 0.02)//0.01
 		
 		spectra.removeAll()
 		weights.removeAll()
 		for noteTracker in notes {
-			for note in noteTracker.update(position) {
+			for note in noteTracker.update(position, Δt) {
 				spectra.append(note.spectrum)
 				weights.append(note.weight)
 			}
@@ -69,13 +71,13 @@ public class ScoreState: State {
 		
 		//Calculates the probability that a note onset occurs in this frame
 		let onsets = score.getOnsets(position)
-		let (sinceOnset, untilOnset) = (onsets.start, onsets.end)
+		let (sinceOnset, untilOnset) = (onsets.lowerBound, onsets.upperBound)
 		pOnset = exp(sinceOnset * sinceOnset / 2 / ScoreState.onsetWidth / ScoreState.onsetWidth) +
 				 exp(untilOnset * untilOnset / 2 / ScoreState.onsetWidth / ScoreState.onsetWidth)
 		
 	}
 	
-	private func calculateTemplate() {
+	fileprivate func calculateTemplate() {
 		
 		if spectra.isEmpty {
 			template = ScoreState.silenceTemplate
@@ -83,42 +85,61 @@ public class ScoreState: State {
 		}
 		
 		//Normalizes weights
-		Utils.normalize(weights)
+		weights = Utils.normalize(weights)
 		
-		//Multiplies each spectrum by its weight
+		//Weighs each spectrum and adds
 		//Each spectrum sums to 1 and the weights sum to 1, so the resulting weighted sum of the spectra will also sum to 1
-		for (var spectrum, var weight) in zip(spectra, weights) {
-			vDSP_vsmulD(spectrum, 1, &weight, &spectrum, 1, vDSP_Length(spectrum.count))
+		memcpy(&template, spectra[0], template.count * MemoryLayout<Double>.size)
+		vDSP_vsmulD(template, 1, &weights[0], &template, 1, vDSP_Length(template.count))
+		for i in 1..<spectra.count {
+			vDSP_vsmaD(spectra[i], 1, &weights[i], template, 1, &template, 1, vDSP_Length(template.count))
 		}
 		
-		//Adds all spectra
-		template = spectra[0]
-		for i in 1..<notes.count {
-			vDSP_vaddD(template, 1, spectra[i], 1, &template, 1, vDSP_Length(template.count))
-		}
+		var sum = 0.0
+		vDSP_sveD(template, 1, &sum, vDSP_Length(template.count))
+		//print(sum)
 		
 		//Takes square root of elements in order to compute bhattacharyya distance
-		var length = Int32(template.count)
-		vvsqrt(&template, template, &length)
+		//var length = Int32(template.count)
+		//vvsqrt(&template, template, &length)
+		
 		
 	}
 	
-	public func update(observation: (spectrum: [Double], pOnset: Double)) -> Double {
+	open func update(_ observation: (spectrum: [Double], pOnset: Double, logTempo: Double)) -> Double {
 		
 		//Computes bhattacharyya distance between spectral template and observation
 		//Both template and observation are assumed to have already been sqrt-ed elementwise beforehand
-		var distance = 0.0
-		vDSP_dotprD(observation.spectrum, 1, template, 1, &distance, vDSP_Length(template.count))
-		
+		var distance = exp(-0.5 * Signal.KLDivergence(template, observation.spectrum))
+		//distance = Signal.HellingerDistance(template, observation.spectrum)
+		/*if distance.isNaN || Utils.randomGaussian() > 3 {
+			print()
+			for x in template {
+				print(x)
+			}
+			for _ in 0..<100 {
+				print()
+			}
+			for x in observation.spectrum {
+				print(x)
+			}
+			let y = score.getNotes(0, position)
+			print(distance)
+			print()
+		}
+		for _ in 0..<4 {
+			print(distance)
+		}*/
 		//Multiplies bhattacharyya distance between spectrums by onset probability
-		distance *= self.pOnset * observation.pOnset + (1 - self.pOnset) * (1 - observation.pOnset)
-		
+		//distance *= self.pOnset * observation.pOnset + (1 - self.pOnset) * (1 - observation.pOnset)
+		//print("distance \(distance)")
+		//print(distance)
 		return distance
 		
 	}
 	
-	public func copy() -> Self {
-		return self.dynamicType.init(position: position, logTempo: logTempo, score: score, notes: notes.map({ $0.copy() }))
+	open func copy() -> Self {
+		return type(of: self).init(position: position, logTempo: logTempo, score: score, notes: notes.map({ $0.copy() }))
 	}
 }
 

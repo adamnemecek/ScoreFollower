@@ -205,6 +205,6 @@ for i in 0..<instruments.count {
 
 (dictionary as NSDictionary).writeToFile("/Users/Tristan/Documents/ScoreFollower/ScoreFollower/SpectralTemplates.plist", atomically: false)
 
-for x in data[instruments.indexOf("b-flat clarinet")!][57] {
+for x in data[instruments.indexOf("piano")!][36] {
 	print(x)
 }

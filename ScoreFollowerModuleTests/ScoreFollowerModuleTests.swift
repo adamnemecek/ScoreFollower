@@ -20,25 +20,43 @@ class ScoreFollowerModuleTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+	
+	func testMisc() {
+		print("\n")
+		var x = [[0.0, 1.0], [0.0, 1.0]]
+		for i in 0..<2 {
+			f(&x[i])
+		}
+		print(x)
+		print("\n")
+	}
+	func f(_ x: inout [Double]) {
+		x[0] = 5.0
+	}
     
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 		
-		var sequence: MusicSequence = nil
+		var sequence: MusicSequence? = nil
 		NewMusicSequence(&sequence)
-		MusicSequenceFileLoad(sequence, NSURL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid"), MusicSequenceFileTypeID.MIDIType, MusicSequenceLoadFlags.SMF_PreserveTracks)
+		MusicSequenceFileLoad(sequence!, URL(fileURLWithPath: "/Users/Tristan/Downloads/sy_ss104.mid") as CFURL, MusicSequenceFileTypeID.midiType, MusicSequenceLoadFlags())
 		print("\nFile Loaded")
-		let schubertScore = PianoScore(sequence: sequence)
+		let schubertScore = PianoScore(sequence: sequence!)
 		print("Score Loaded")
-		for i in 0..<20 {
-			let notes = schubertScore.getNotes(0, Double(i) / 2.0)
-			for noteGroup in notes.values {
-				for note in noteGroup.pitches {
-					print(Utils.noteName(note), terminator: " ")
-				}
+		let noteTracker = NoteTracker(score: schubertScore, instrumentGroup: 0, position: 14.7)
+		
+		print(Signal.frameLength)
+		let pianoNote = PianoNote(pitch: 57, spectrum: [])
+		for i in 0..<40 {
+			let duration = Double(i) * Signal.frameLength
+			print("\(duration): \(pianoNote.getSpectrum(duration).weight)")
+		}
+		
+		for i in 18*4..<150 {
+			for (spectrum, weight) in noteTracker.update(Double(i) / 2.0, 0.5) {
+				print("\(Utils.noteName(spectrum)) \(weight)")
 			}
-			print(schubertScore.getOnsets(Double(i) / 2.0))
 			print("\n")
 		}
 		print("\n")
@@ -46,7 +64,7 @@ class ScoreFollowerModuleTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
